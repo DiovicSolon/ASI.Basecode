@@ -6,13 +6,21 @@
         </div>
     }
 </div>
-<div class="container pt-5">
+<style>
+
+    .container{
+        max-width:400px;
+    }
+
+   
+</style>
+<div class="container"   pt-5">
     <h1 class="text-center mb-4">Edit Book</h1>
 
     <form asp-action="Edit" method="post" onsubmit="return confirm('Are you sure you want to edit this book?');">
         <input type="hidden" asp-for="Id" />
 
-        <div class="form-group">
+        <div class="form-group"> 
             <label asp-for="Title"></label>
             <input asp-for="Title" class="form-control" required />
             <span asp-validation-for="Title" class="text-danger"></span>
