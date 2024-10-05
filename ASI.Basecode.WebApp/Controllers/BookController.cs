@@ -39,6 +39,8 @@ namespace ASI.Basecode.WebApp.Controllers
             {
                 return View(book);
             }
+            TempData["Message"] = "You have successfully Created";
+            TempData["AlertType"] = "alert-success";
 
 
             _bookService.AddBook(book);
@@ -53,7 +55,7 @@ namespace ASI.Basecode.WebApp.Controllers
             {
                 _bookService.DeleteBook(book);
                 TempData["Message"] = "The book has been successfully deleted.";
-                TempData["AlertType"] = "alert-danger";
+                TempData["AlertType"] = "alert-Success";
             }
 
             return RedirectToAction(nameof(Index));
