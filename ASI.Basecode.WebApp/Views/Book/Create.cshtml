@@ -1,0 +1,60 @@
+﻿@model ASI.Basecode.Data.Models.Book
+
+@{
+    ViewData["Title"] = "Create Book";
+}
+
+<h1>Create Book</h1>
+
+<form asp-action="Create" method="post" onsubmit="return confirm('Are you sure you want to create this book? 🤥');">
+    Thank You Bro
+    <table class="table">
+        <tr>
+            <td>
+                <label asp-for="Title" class="control-label"></label>
+            </td>
+            <td>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label asp-for="Description" class="control-label"></label>
+            </td>
+            <td>
+                <textarea asp-for="Description" class="form-control"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label asp-for="Author" class="control-label"></label>
+            </td>
+            <td>
+                <input asp-for="Author" class="form-control" />
+                <span asp-validation-for="Author" class="text-danger"></span>
+            </td>
+        </tr>
+        <tr>
+            
+        </tr>
+        <tr>
+            <td colspan="2">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </td>
+        </tr>
+    </table>
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{ 
+        await Html.RenderPartialAsync("_ValidationScriptsPartial"); 
+    }
+}
+
+

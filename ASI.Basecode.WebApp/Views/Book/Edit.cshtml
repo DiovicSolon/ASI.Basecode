@@ -1,0 +1,50 @@
+﻿@model ASI.Basecode.Data.Models.Book
+<div class="text-center">
+    @if (TempData["AlertType"] != null)
+    {
+        <div class="alert @TempData["AlertType"]" role="alert">
+        </div>
+    }
+</div>
+<div class="container pt-5">
+    <h1 class="text-center mb-4">Edit Book</h1>
+
+    <form asp-action="Edit" method="post" onsubmit="return confirm('Are you sure you want to edit this book?');">
+        <input type="hidden" asp-for="Id" />
+
+        <div class="form-group">
+            <label asp-for="Title"></label>
+            <input asp-for="Title" class="form-control" required />
+            <span asp-validation-for="Title" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Description"></label>
+            <textarea asp-for="Description" class="form-control" required></textarea>
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Author"></label>
+            <input asp-for="Author" class="form-control" required />
+            <span asp-validation-for="Author" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="DateTimeCreated"></label>
+            <input asp-for="DateTimeCreated" class="form-control" type="date" required />
+            <span asp-validation-for="DateTimeCreated" class="text-danger"></span>
+        </div>
+
+        <div class="form-group text-center">
+            <button type="submit" class="btn btn-primary">Save</button>
+            <a asp-action="Index" class="btn btn-secondary" onclick="return confirm('Are you sure you want to cancel?');">Cancel</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
