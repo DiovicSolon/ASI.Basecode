@@ -1,0 +1,73 @@
+﻿@model ASI.Basecode.Data.Models.Category
+@{
+    ViewData["Title"] = "Add Category";
+}
+
+<div class="container bg-[#ECE7E1] h-screen px-8">
+    <div class="flex-1 p-4 ">
+        <!-- Logo in the Top Right -->
+        <div class="flex justify-end mb-4">
+            <img src="~/images/logo.png"
+                 class="h-auto w-auto"
+                 alt="logo">
+        </div>
+    </div>
+    <div class="border-2 border-gray-400 p-4 rounded-xl">
+        <div class="mx-3 my-3">
+            <h2 class="text-3xl font-bold text-[#4D7766] mb-4">Add New Category</h2>
+
+            <div class="border-b-2 border-gray-400 mb-4"></div>
+
+            <!-- Display Success and Error Messages -->
+            <div class="message-container">
+                @if (TempData["SuccessMessage"] != null)
+                {
+                    <div class="alert alert-success alert-message">
+                        @TempData["SuccessMessage"]
+                    </div>
+                }
+
+                @if (TempData["ErrorMessage"] != null)
+                {
+                    <div class="alert alert-danger alert-message">
+                        @TempData["ErrorMessage"]
+                    </div>
+                }
+            </div>
+
+            <!-- Add Category Form -->
+            <form method="post" asp-action="Create">
+                <div class="mb-3">
+                    <label asp-for="CategoryName" class="text-[#252525] text-base block mb-2">Category Name</label>
+                    <input asp-for="CategoryName" class="w-full px-2 py-2 border-2 border-gray-400 bg-transparent rounded-md" placeholder="Enter Category Name" required />
+                    <span asp-validation-for="CategoryName" class="text-danger"></span>
+                </div>
+
+                <!-- Hidden field for UserName -->
+                <input type="hidden" asp-for="UserName" value="@User.Identity.Name" />
+
+                <div class="flex items-center justify-end gap-4 mt-4">
+                    <button type="button" onclick="window.location.href='@Url.Action("Index", "Category")'" class="bg-transparent rounded-lg border-2 border-[#5E5E5E] text-[#5E5E5E] font-semibold py-[6px] px-[10px]">Cancel</button>
+                    <button type="submit" class="bg-[#4D7766] rounded-lg py-2 px-3 text-white font-semibold hover:bg-gray-700 cursor-pointer outline-none">Create</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+<script>
+    $(document).ready(function () {
+        var successMessage = @Html.Raw(Json.Serialize(TempData["SuccessMessage"]));
+        var errorMessage = @Html.Raw(Json.Serialize(TempData["ErrorMessage"]));
+
+        if (successMessage) {
+            toastr.success(successMessage);
+        }
+
+        if (errorMessage) {
+            toastr.error(errorMessage);
+        }
+    });
+</script>

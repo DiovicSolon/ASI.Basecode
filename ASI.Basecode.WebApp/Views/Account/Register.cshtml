@@ -1,0 +1,78 @@
+﻿@using ASI.Basecode.Services.ServiceModels
+@model UserViewModel
+@{
+    ViewBag.LoginView = true;
+
+    ViewData["IsLoginPage"] = true;
+
+
+}
+<div class="bg-gray-100 flex items-center justify-center h-screen">
+    <div class="flex w-full h-full bg-white overflow-hidden">
+        <!-- Right Section (Form) -->
+        <div class="w-1/2 p-8 bg-[#ECE7E1]">
+            <h2 class="text-3xl font-bold text-[#4D7766] mb-6 text-center">Register</h2>
+            <form method="post" action="/Account/Register" id="loginForm" class="space-y-6">
+                <div class="flex items-center justify-between gap-x-2">
+                    <div class="">
+                        <label class="block text-sm font-medium text-gray-700" for="name">First Name</label>
+                        <input cla type="text" id="FirstName" class="mt-1 block w-full px-2 py-2 border-solid border-2 border-gray-400 bg-transparent rounded-md focus:outline-none focus:ring-2 focus:ring-teal-600"
+                               asp-for="FirstName" />
+                        <span asp-validation-for="FirstName" class="text-danger"></span>
+                    </div>
+                    <div class="">
+                        <label class="block text-sm font-medium text-gray-700" for="name">Last Name</label>
+                        <input type="text" id="LastName" class="mt-1 block w-full px-2 py-2 border-solid border-2 border-gray-400 bg-transparent rounded-md focus:outline-none focus:ring-2 focus:ring-teal-600"
+                               asp-for="LastName" />
+                        <span asp-validation-for="LastName" class="text-danger"></span>
+                    </div>
+                </div>
+                <div>
+                    <label for="Email" class="block text-sm font-medium text-gray-700">Email Address</label>
+                    <input asp-for="Email" type="email" id="Email" name="Email" class="mt-1 block w-full px-2 py-2 border-solid border-2 border-gray-400 bg-transparent rounded-md focus:outline-none focus:ring-2 focus:ring-teal-600">
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+                <div>
+                    <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
+                    <input asp-for="UserName" type="text" id="username" name="username" class="mt-1 block w-full px-2 py-2 border-solid border-2 border-gray-400 bg-transparent rounded-md focus:outline-none focus:ring-2 focus:ring-teal-600">
+                    <span asp-validation-for="UserName" class="text-danger"></span>
+                </div>
+                <div>
+                    <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+                    <input asp-for="Password" type="password" id="password" name="password" class="mt-1 block w-full bg-transparent px-2 py-2 border-solid border-2 border-gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-600">
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+
+                <div>
+                    <label for="password" class="block text-sm font-medium text-gray-700">ConfirmPassword</label>
+                    <input asp-for="ConfirmPassword" type="Password" id="ConfirmPassword" name="ConfirmPassword" class="mt-1 block w-full bg-transparent px-2 py-2 border-solid border-2 border-gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-600">
+                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                </div>
+                <button type="submit" class="w-full py-2 bg-[#4D7766] text-white font-semibold rounded-md hover:bg-teal-800 transition duration-200">Register</button>
+            </form>
+            <div class="border-b-2 border-gray-400 mt-10 mb-2 mx-2">
+            </div>
+            <div class="mt-4 text-center">
+                <span class="text-sm text-black">Already have an account? </span>
+                <a asp-controller="Account" asp-action="Login" class="text-sm text-[#4D7766] font-bold hover:underline">Log In</a>
+            </div>
+        </div>
+        <!-- Left Section (Logo) -->
+        <div class="w-1/2 bg-[#4D7766] p-8 flex items-center justify-center">
+            <div class="text-center">
+                <h1 class="text-5xl font-bold text-[#ECE7E1]">.budg<span class="text-[#ECE7E1]">ET</span></h1>
+                <p class="text-[#ECE7E1] mt-2">expense tracker</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script>
+
+        var errorMessage = '@TempData["ErrorMessage"]';
+        if (errorMessage) {
+            toastr.error(errorMessage);
+        }
+    </script>
+}

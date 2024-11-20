@@ -1,0 +1,111 @@
+﻿@{
+    var totalExpenses = ViewData["TotalExpenses"] as decimal?;
+    var monthlyExpenses = ViewData["MonthlyExpenses"] as IEnumerable<dynamic>;
+    var categories = ViewData["Categories"] as List<string>;
+}
+
+
+
+
+
+<div class="w-full bg-[#ECE7E1] h-screen px-8">
+    <div class="flex-1 p-4">
+        <div class="flex justify-end mb-4">
+            <img src="~/images/logo.png" class="h-auto w-auto" alt="logo">
+        </div>
+    </div>
+    <div class="overflow-y-auto max-h-[calc(100vh-128px)] scrollbar-hidden">
+        <div class="border-2 border-gray-400 p-4 rounded-xl">
+            <div class="mx-3 my-3">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-2xl font-bold text-[#4D7766]">Expense Summary</h2>
+                    <button class="bg-[#4D7766] rounded-lg p-2 hover:bg-gray-700 cursor-pointer outline-none">
+                        <span class="text-base text-[#ECE7E1]" onclick="window.location.href='@Url.Action("GenerateReport", "Report")'">
+                            Generate Report
+                        </span>
+                    </button>
+                </div>
+
+                <div class="border-b-2 border-gray-400 mb-4"></div>
+                <div class="flex items-center justify-end gap-x-2">
+                    <select class="border-2 border-gray-400 rounded-lg p-2 bg-transparent">
+                        @foreach (var category in categories)
+                        {
+                            <option>@category</option>
+                        }
+                    </select>
+                    <input class="px-2 py-2 border-2 border-gray-400 bg-transparent rounded-md" type="date" />
+                </div>
+                <div class="flex justify-evenly items-center mt-4">
+                    <div class="flex flex-col items-center">
+                        <p class="text-3xl font-bold text-[#4D7766] w-1/2">Total Expenses</p>
+                        <p class="text-3xl font-bold text-[#4D7766]">Php @totalExpenses</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="border-2 border-gray-400 p-4 rounded-xl mt-4 mb-8">
+            <div class="mx-3 my-3">
+                <h2 class="text-2xl font-bold text-[#4D7766] mb-4">Expense Trends</h2>
+                <div class="border-b-2 border-gray-400 mb-4"></div>
+            </div>
+            <div>
+                <!-- Line chart display -->
+                <canvas id="lineChart" class="w-full h-64"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Prepare chart data dynamically from the server
+    const labels = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(
+        monthlyExpenses.Select(e => "Month " + e.Month)));
+    const data = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(
+        monthlyExpenses.Select(e => e.Total)));
+
+    // Initialize the line chart
+    const ctx = document.getElementById('lineChart').getContext('2d');
+    const lineChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Expenses Over Time',
+                data: data,
+                borderColor: '#4D7766',
+                backgroundColor: 'rgba(77, 119, 102, 0.2)',
+                borderWidth: 2,
+                fill: true,
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'top',
+                },
+            },
+            scales: {
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Months'
+                    }
+                },
+                y: {
+                    title: {
+                        display: true,
+                        text: 'Expenses (Php)'
+                    },
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
+

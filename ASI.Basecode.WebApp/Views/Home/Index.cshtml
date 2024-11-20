@@ -1,0 +1,63 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="w-full bg-[#ECE7E1] h-screen px-8">
+    <div class="overflow-auto">
+        <div class="flex-1 p-4 ">
+            <!-- Logo in the Top Right -->
+            <div class="flex justify-end mb-4">
+                <img src="~/images/logo.png"
+                     class="h-auto w-auto"
+                     alt="logo">
+            </div>
+        </div>
+        <div class="border-2 border-gray-400 rounded-xl p-4">
+            <p class="text-base text-black mb-2">Quick Access</p>
+            <div class="border-b-2 border-gray-300"></div>
+            <div class="flex items-center justify-evenly gap-x-6 mt-4">
+                <button class="bg-[#4D7766] flex items-center rounded-xl px-4 py-[12px] space-x-2" onclick="window.location.href='@Url.Action("Create", "Expense")'">
+                    <svg width="27" height="27" viewBox="0 0 27 27" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M13.5 5.625C14.1213 5.625 14.625 6.12868 14.625 6.75V12.375H20.25C20.8713 12.375 21.375 12.8787 21.375 13.5C21.375 14.1213 20.8713 14.625 20.25 14.625H14.625V20.25C14.625 20.8713 14.1213 21.375 13.5 21.375C12.8787 21.375 12.375 20.8713 12.375 20.25V14.625H6.75C6.12868 14.625 5.625 14.1213 5.625 13.5C5.625 12.8787 6.12868 12.375 6.75 12.375H12.375V6.75C12.375 6.12868 12.8787 5.625 13.5 5.625Z" fill="#ECE7E1" />
+                    </svg>
+                    <svg width="37" height="37" viewBox="0 0 37 37" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M21.5834 6.16667H15.4167C9.60273 6.16667 6.69575 6.16667 4.88957 7.97284C3.58911 9.2733 3.225 11.1444 3.12305 14.2604H33.8771C33.7752 11.1444 33.4111 9.2733 32.1105 7.97284C30.3044 6.16667 27.3973 6.16667 21.5834 6.16667Z" fill="#ECE7E1" />
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M15.4166 30.8333H21.5833C27.3972 30.8333 30.3043 30.8333 32.1104 29.0271C33.9166 27.2211 33.9166 24.3139 33.9166 18.5C33.9166 17.8187 33.9166 17.1773 33.9137 16.5729H3.08617C3.08325 17.1773 3.08325 17.8187 3.08325 18.5C3.08325 24.3139 3.08325 27.2211 4.88942 29.0271C6.69561 30.8333 9.60259 30.8333 15.4166 30.8333ZM8.09375 24.6667C8.09375 24.0281 8.61143 23.5104 9.25 23.5104H15.4167C16.0552 23.5104 16.5729 24.0281 16.5729 24.6667C16.5729 25.3052 16.0552 25.8229 15.4167 25.8229H9.25C8.61143 25.8229 8.09375 25.3052 8.09375 24.6667ZM19.2708 23.5104C18.6322 23.5104 18.1145 24.0281 18.1145 24.6667C18.1145 25.3052 18.6322 25.8229 19.2708 25.8229H21.5833C22.2218 25.8229 22.7395 25.3052 22.7395 24.6667C22.7395 24.0281 22.2218 23.5104 21.5833 23.5104H19.2708Z" fill="#ECE7E1" />
+                    </svg>
+                    <span class="text-base text-[#ECE7E1]">
+                        Add Expense
+                    </span>
+                </button>
+                <button class="bg-[#4D7766] flex items-center rounded-xl px-4 py-3 space-x-2" @* onclick="window.location.href='@Url.Action("Create", "Category")'" *@>
+                    <svg width="27" height="27" viewBox="0 0 27 27" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M13.5 5.625C14.1213 5.625 14.625 6.12868 14.625 6.75V12.375H20.25C20.8713 12.375 21.375 12.8787 21.375 13.5C21.375 14.1213 20.8713 14.625 20.25 14.625H14.625V20.25C14.625 20.8713 14.1213 21.375 13.5 21.375C12.8787 21.375 12.375 20.8713 12.375 20.25V14.625H6.75C6.12868 14.625 5.625 14.1213 5.625 13.5C5.625 12.8787 6.12868 12.375 6.75 12.375H12.375V6.75C12.375 6.12868 12.8787 5.625 13.5 5.625Z" fill="#ECE7E1" />
+                    </svg>
+                    <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <g clip-path="url(#clip0_5_170)">
+                            <path d="M7.5 10.5H27V25.5H3V6H13.5L16.5 9H6V22.5H7.5V10.5Z" fill="#ECE7E1" />
+                        </g>
+                        <defs>
+                            <clipPath id="clip0_5_170">
+                                <rect width="30" height="30" fill="white" />
+                            </clipPath>
+                        </defs>
+                    </svg>
+                    <span class="text-base text-[#ECE7E1]">
+                        Add Category
+                    </span>
+                </button>
+                <button class="bg-[#4D7766] flex items-center rounded-xl px-4 py-3 space-x-2">
+                    <svg width="27" height="27" viewBox="0 0 27 27" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M13.5 5.625C14.1213 5.625 14.625 6.12868 14.625 6.75V12.375H20.25C20.8713 12.375 21.375 12.8787 21.375 13.5C21.375 14.1213 20.8713 14.625 20.25 14.625H14.625V20.25C14.625 20.8713 14.1213 21.375 13.5 21.375C12.8787 21.375 12.375 20.8713 12.375 20.25V14.625H6.75C6.12868 14.625 5.625 14.1213 5.625 13.5C5.625 12.8787 6.12868 12.375 6.75 12.375H12.375V6.75C12.375 6.12868 12.8787 5.625 13.5 5.625Z" fill="#ECE7E1" />
+                    </svg>
+                    <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M10.1111 1.44444H15.8888V20.2222H10.1111V1.44444ZM7.22222 7.22221H1.44445V20.2222H7.22222V7.22221ZM26 23.1111H0V24.7H26V23.1111ZM24.5555 10.1111H18.7778V20.2222H24.5555V10.1111Z" fill="#ECE7E1" />
+                    </svg>
+                    <span class="text-base text-[#ECE7E1]">
+                        Generate Report
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

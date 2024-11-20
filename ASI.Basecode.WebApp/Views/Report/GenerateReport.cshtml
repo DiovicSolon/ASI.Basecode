@@ -1,0 +1,128 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<div class="w-full bg-[#ECE7E1] h-screen px-8">
+    <div class="flex-1 p-4 ">
+        <div class="flex justify-end mb-2">
+            <img src="~/images/logo.png"
+                 class="h-auto w-auto"
+                 alt="logo">
+        </div>
+    </div>
+    <button class="cursor-pointer outline-none group" onclick="window.location.href='@Url.Action("ViewReport", "Report")'">
+        <div class="flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="text-[#4D7766] h-8 w-8 group-hover:text-gray-700" viewBox="0 0 24 24">
+                <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="m14 7l-5 5m0 0l5 5" />
+            </svg>
+            <span class="text-[#4D7766] font-bold text-xl group-hover:text-gray-700">
+                Back
+            </span>
+        </div>
+    </button>
+
+
+    <div class="overflow-y-auto max-h-[calc(100vh-128px)] scrollbar-hidden">
+        <div class="border-2 border-gray-400 p-4 rounded-xl">
+            <div class="mx-3 my-3">
+
+                <div class="mb-4">
+                    <h2 class="text-2xl font-bold text-[#4D7766]">
+                        Generate Report
+                    </h2>
+                </div>
+
+                <div class="border-b-2 border-gray-400 mb-4"></div>
+
+                <div class="space-x-2 flex items-center justify-end">
+
+                    <!-- Category Dropdown -->
+                    <div class="flex flex-col items-start">
+                        <label for="category" class="text-[#4D7766] text-sm ml-1 font-semibold">Category</label>
+                        <select id="category" class="border-2 border-gray-400 rounded-lg bg-transparent py-[3px] px-1">
+                            <option>Maintenance</option>
+                        </select>
+                    </div>
+
+                    <!-- Start Date Input -->
+                    <div class="flex flex-col items-start">
+                        <label for="start-date" class="text-[#4D7766] text-sm ml-1 font-semibold">Start</label>
+                        <input id="start-date" type="date" class="border-2 border-gray-400 rounded-lg bg-transparent py-[3px] px-1" />
+                    </div>
+
+                    <!-- End Date Input -->
+                    <div class="flex flex-col items-start">
+                        <label for="end-date" class="text-[#4D7766] text-sm ml-1 font-semibold">End</label>
+                        <input id="end-date" type="date" class="border-2 border-gray-400 rounded-lg bg-transparent py-[3px] px-1" />
+                    </div>
+                </div>
+                <div class="overflow-x-auto mt-4">
+                    <table class="min-w-full border-collapse">
+                        <thead>
+                            <tr class="bg-[#ECE7E1] text-[#4D7766]">
+                                <th scope="col" class="text-center text-[#656565] py-3 px-6 text-sm font-medium uppercase">Title</th>
+                                <th scope="col" class="text-center text-[#656565] py-3 px-6 text-sm font-medium uppercase">Category</th>
+                                <th scope="col" class="text-center text-[#656565] py-3 px-6 text-sm font-medium uppercase">Date</th>
+                                <th scope="col" class="text-center text-[#656565] py-3 px-6 text-sm font-medium uppercase">Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="odd:bg-[#F4EADD] even:bg-[#B3D3C2]">
+                                <td class="py-3 px-6 text-center text-[#1D1D1D] font-bold"></td>
+                                <td class="py-3 px-6 text-center text-[#1D1D1D] font-bold"></td>
+                                <td class="py-3 px-6 text-center text-[#1D1D1D] font-bold"></td>
+                                <td class="py-3 px-6 text-center text-[#1D1D1D] font-bold"></td>
+                            </tr>
+                            <tr>
+                                <td colspan="4" class="text-center">No Data Found</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="flex items-center justify-center mt-4 gap-x-4">
+                    <!-- Previous Button -->
+                    <button class="bg-[#4D7766] p-1 rounded-full text-white hover:bg-gray-700 cursor-pointer outline-noner">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="text-white h-6 w-6" viewBox="0 0 24 24">
+                            <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="m14 17l-5-5m0 0l5-5" />
+                        </svg>
+                    </button>
+
+                    <!-- Page Number -->
+                    <span>
+                        <p>Page 1 of 10</p>
+                    </span>
+
+                    <!-- Next Button -->
+                    <button class="bg-[#4D7766] p-1 rounded-full text-white hover:bg-gray-700 cursor-pointer outline-none">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="text-white h-6 w-6" viewBox="0 0 24 24">
+                            <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="m10 17l5-5m0 0l-5-5" />
+                        </svg>
+                    </button>
+                </div>
+                <div class="flex items-center justify-end">
+                    <div class="flex flex-col items-start">
+                        <label class="text-black text-base font-semibold">Total Expense</label>
+                        <p class="text-2xl text-[#4D7766] font-bold underline">
+                            35,000.00
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<style>
+    .scrollbar-hidden {
+        -ms-overflow-style: none; /* Internet Explorer 10+ */
+        scrollbar-width: none; /* Firefox */
+    }
+
+        .scrollbar-hidden::-webkit-scrollbar {
+            display: none; /* WebKit browsers */
+        }
+</style>

@@ -1,0 +1,211 @@
+﻿    @model IEnumerable<ASI.Basecode.Data.Models.Expense>
+
+@{
+    ViewData["Title"] = "Expense Table";
+}
+
+<div class="w-full bg-[#ECE7E1] h-screen px-6">
+    <div class="flex-1 p-3">
+        <div class="flex justify-end mb-2">
+            <img src="~/images/logo.png"
+                 class="h-auto w-auto"
+                 alt="logo">
+        </div>
+    </div>
+    <div class="border-2 border-gray-400 p-4 rounded-xl">
+        <div class="flex justify-between items-center mb-3">
+            <div>
+                <h2 class="text-3xl font-bold text-[#4D7766]">
+                    Expenses
+                </h2>
+            </div>
+            <div class="space-x-2 flex items-center">
+                <div class="flex items-center justify-center space-x-2">
+                    <button class="bg-[#4D7766] rounded-lg text-[#ECE7E1] no-underline flex items-center px-2 py-1 hover:bg-gray-700 cursor-pointer outline-none"
+                            onclick="window.location.href='@Url.Action("Create", "Expense")'">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6z" />
+                        </svg>
+                        <span class="ml-1">Add Expense</span>
+                    </button>
+                </div>
+
+                <!-- Category Dropdown -->
+                <div class="flex flex-col items-start">
+                    <label for="category" class="text-gray-600 text-sm ml-1">Category</label>
+                    <select id="category" class="border-2 border-gray-400 rounded-lg bg-transparent py-[3px] px-1">
+                        <option>Maintenance</option>
+                    </select>
+                </div>
+
+                <!-- Start Date Input -->
+                <div class="flex flex-col items-start">
+                    <label for="start-date" class="text-gray-600 text-sm ml-1">Start</label>
+                    <input id="start-date" type="date" class="border-2 border-gray-400 rounded-lg bg-transparent py-[3px] px-1" />
+                </div>
+
+                <!-- End Date Input -->
+                <div class="flex flex-col items-start">
+                    <label for="end-date" class="text-gray-600 text-sm ml-1">End</label>
+                    <input id="end-date" type="date" class="border-2 border-gray-400 rounded-lg bg-transparent py-[3px] px-1" />
+                </div>
+            </div>
+        </div>
+
+
+        <div class="border-b-2 border-gray-400 mb-4">
+        </div>
+
+        <div class="overflow-x-auto mt-4">
+            <table class="min-w-full border-collapse">
+                <thead>
+                    <tr class="bg-[#ECE7E1] text-[#4D7766]">
+                        <th scope="col" class="text-center text-[#656565] py-3 px-6 text-sm font-medium uppercase">Title</th>
+                        <th scope="col" class="text-center text-[#656565] py-3 px-6 text-sm font-medium uppercase">Category</th>
+                        <th scope="col" class="text-center text-[#656565] py-3 px-6 text-sm font-medium uppercase">Amount</th>
+                        <th scope="col" class="text-center text-[#656565] py-3 px-6 text-sm font-medium uppercase">Date</th>
+                        <th scope="col" class="text-center text-[#656565] py-3 px-6 text-sm font-medium uppercase">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null && Model.Any())
+                    {
+                        foreach (var expense in Model)
+                        {
+                            <tr class="odd:bg-[#F4EADD] even:bg-[#B3D3C2]">
+                                <td class="py-3 px-6 text-center text-[#1D1D1D] font-bold">@expense.Title</td>
+                                <td class="py-3 px-6 text-center text-[#1D1D1D] font-bold">@expense.Category</td>
+                                <td class="py-3 px-6 text-center text-[#1D1D1D] font-bold">@expense.Amount.ToString("C")</td>
+                                <td class="py-3 px-6 text-center text-[#1D1D1D] font-bold">@expense.Date.ToString("MM/dd/yyyy")</td>
+                                <td class="py-3 px-6 text-center">
+                                    <div class="flex justify-center space-x-4">
+                                        <a asp-controller="Expense" asp-action="Edit" asp-route-id="@expense.ExpenseId" class="text-blue-600 hover:text-blue-800">
+                                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <g clip-path="url(#clip0_48_77)">
+                                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M18 17.6292H2V2.47219H10V0.577558H0V19.5238H20V10.0507H18V17.6292ZM6 9.95217L15.839 0.476196L20 4.39523L9.842 13.8399H6V9.95217Z" fill="#1B4862" />
+                                                </g>
+                                                <defs>
+                                                    <clipPath id="clip0_48_77">
+                                                        <rect width="20" height="20" fill="white" />
+                                                    </clipPath>
+                                                </defs>
+                                            </svg>
+                                        </a>
+
+                                        <a class="text-red-600 hover:text-red-800 cursor-pointer" onclick="confirmDelete(@expense.ExpenseId)">
+                                            <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M7.5625 4.125V2.06112C7.5625 1.87879 7.63493 1.70392 7.76386 1.57499C7.8928 1.44606 8.06766 1.37363 8.25 1.37363H13.75C13.9323 1.37363 14.1072 1.44606 14.2361 1.57499C14.3651 1.70392 14.4375 1.87879 14.4375 2.06112V4.125H19.9375C20.1198 4.125 20.2947 4.19743 20.4236 4.32636C20.5526 4.4553 20.625 4.63016 20.625 4.8125C20.625 4.99484 20.5526 5.1697 20.4236 5.29864C20.2947 5.42757 20.1198 5.5 19.9375 5.5H2.0625C1.88016 5.5 1.7053 5.42757 1.57636 5.29864C1.44743 5.1697 1.375 4.99484 1.375 4.8125C1.375 4.63016 1.44743 4.4553 1.57636 4.32636C1.7053 4.19743 1.88016 4.125 2.0625 4.125H7.5625ZM8.9375 4.125H13.0625V2.75H8.9375V4.125ZM4.125 20.625C3.94266 20.625 3.7678 20.5526 3.63886 20.4236C3.50993 20.2947 3.4375 20.1198 3.4375 19.9375V5.5H18.5625V19.9375C18.5625 20.1198 18.4901 20.2947 18.3611 20.4236C18.2322 20.5526 18.0573 20.625 17.875 20.625H4.125ZM8.9375 16.5C9.11984 16.5 9.2947 16.4276 9.42364 16.2986C9.55257 16.1697 9.625 15.9948 9.625 15.8125V8.9375C9.625 8.75516 9.55257 8.5803 9.42364 8.45136C9.2947 8.32243 9.11984 8.25 8.9375 8.25C8.75516 8.25 8.5803 8.32243 8.45136 8.45136C8.32243 8.5803 8.25 8.75516 8.25 8.9375V15.8125C8.25 15.9948 8.32243 16.1697 8.45136 16.2986C8.5803 16.4276 8.75516 16.5 8.9375 16.5ZM13.0625 16.5C13.2448 16.5 13.4197 16.4276 13.5486 16.2986C13.6776 16.1697 13.75 15.9948 13.75 15.8125V8.9375C13.75 8.75516 13.6776 8.5803 13.5486 8.45136C13.4197 8.32243 13.2448 8.25 13.0625 8.25C12.8802 8.25 12.7053 8.32243 12.5764 8.45136C12.4474 8.5803 12.375 8.75516 12.375 8.9375V15.8125C12.375 15.9948 12.4474 16.1697 12.5764 16.2986C12.7053 16.4276 12.8802 16.5 13.0625 16.5Z" fill="#DA4747" />
+                                            </svg>
+                                        </a>
+
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="6" class="text-center">No expenses found</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <!-- Pagination Controls -->
+        <div class="flex items-center justify-center mt-4 gap-x-4">
+            @if (ViewData["CurrentPage"] != null && ViewData["TotalPages"] != null)
+            {
+                var currentPage = (int)ViewData["CurrentPage"];
+                var totalPages = (int)ViewData["TotalPages"];
+
+                <!-- Previous Button -->
+                <button class="bg-[#4D7766] p-1 rounded-full
+            @(currentPage == 1 ? "disabled bg-opacity-50" : "hover:bg-gray-700 cursor-pointer outline-none")"
+                @(currentPage == 1 ? "disabled" : "")
+                        onclick="window.location.href='@Url.Action("ExpenseTable", new { page = currentPage - 1 })'">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="text-white h-6 w-6" viewBox="0 0 24 24">
+                        <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="m14 7l-5 5m0 0l5 5" />
+                    </svg>
+                </button>
+
+                <!-- Page Number -->
+                <span>
+                    <p>Page @currentPage of @totalPages</p>
+                </span>
+
+                <!-- Next Button -->
+                <button class="bg-[#4D7766] p-1 rounded-full
+            @(currentPage == totalPages ? "disabled bg-opacity-50" : "hover:bg-gray-700 cursor-pointer outline-none")"
+                @(currentPage == totalPages ? "disabled" : "")
+                        onclick="window.location.href='@Url.Action("ExpenseTable", new { page = currentPage + 1 })'">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="text-white h-6 w-6" viewBox="0 0 24 24">
+                        <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="m10 17l5-5m0 0l-5-5" />
+                    </svg>
+                </button>
+            }
+        </div>
+
+
+    </div>
+    <!-- Delete Confirmation Modal -->
+    <div id="deleteModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+        <div class="bg-[#ECE7E1] p-8 rounded-xl shadow-lg w-1/3">
+            <div class="flex justify-between items-center border-b pb-2">
+                <h3 class="text-xl font-bold text-[#4D7766]">Delete Expense</h3>
+            </div>
+            <div class="border-b-2 border-gray-400 mb-4"></div>
+            <div class="p-6 text-center">
+                <p class="text-[#1D1D1D] font-bold text-base mb-1">
+                    Are you sure you want to <span class="text-[#FF0000]">delete</span> this category?
+                </p>
+                <p class="text-[#7C6C6C] font-bold text-base mb-4">
+                    This action is irreversible.
+                </p>
+                <div class="flex items-center justify-center space-x-4">
+                    <button type="button"
+                            onclick="toggleDeleteModal(false)"
+                            class="bg-transparent rounded-lg border-2 border-[#5E5E5E] text-[#5E5E5E] font-semibold py-[6px] px-[12px]">
+                        Cancel
+                    </button>
+                    <form id="deleteForm" method="post" asp-controller="Expense" asp-action="DeleteConfirmed">
+                        <input type="hidden" id="deleteId" name="id" />
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="px-4 py-2 bg-[#FF0000] text-white rounded-md">
+                            Delete
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+<script>
+
+    $(document).ready(function () {
+        var successMessage = '@TempData["SuccessMessage"]';
+        var errorMessage = '@TempData["ErrorMessage"]';
+
+        if (successMessage) {
+            toastr.success(successMessage);
+        }
+
+        if (errorMessage) {
+            toastr.error(errorMessage);
+        }
+    });
+
+    function toggleDeleteModal(show) {
+        const modal = document.getElementById('deleteModal');
+        modal.classList.toggle('hidden', !show);
+    }
+
+    function confirmDelete(id) {
+        document.getElementById('deleteId').value = id;
+        toggleDeleteModal(true);
+    }
+</script>
+
