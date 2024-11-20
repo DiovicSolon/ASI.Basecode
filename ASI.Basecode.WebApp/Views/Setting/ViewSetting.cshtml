@@ -8,39 +8,22 @@
             <img src="~/images/logo.png" class="h-auto w-auto" alt="logo">
         </div>
     </div>
-
-    @if (TempData["SuccessMessage"] != null)
-    {
-        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4">
-            @TempData["SuccessMessage"]
-        </div>
-    }
-    @if (TempData["ErrorMessage"] != null)
-    {
-        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">
-            @TempData["ErrorMessage"]
-        </div>
-    }
-
     <div class="overflow-y-auto max-h-[calc(100vh-128px)] scrollbar-hidden space-y-6">
-        <!--Account Details-->
+        
+        <!-- Account Details -->
         <div class="border-2 border-gray-400 p-4 rounded-xl">
             <div class="mx-3 my-3">
                 <div class="mb-4">
                     <h2 class="text-2xl font-bold text-[#4D7766]">Account Details</h2>
                 </div>
-
                 <div class="border-b-2 border-gray-400 mb-4"></div>
-
                 <form asp-action="UpdateAccount" asp-controller="Setting" method="post" enctype="multipart/form-data" class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
                     @Html.AntiForgeryToken()
                     <input type="hidden" asp-for="Id" />
-
-                    <!-- Left Column -->
                     <div class="space-y-4">
                         <div>
                             <label class="block text-sm font-medium text-gray-700" asp-for="UserName">Username</label>
-                            <input type="text" asp-for="UserName" readonly class="mt-1 block w-full px-2 py-2 border-2 border-gray-400 bg-gray-100 rounded-md">
+                            <input type="text" asp-for="UserName" readonly class="mt-1 block w-full px-2 py-2 border-2 border-gray-400 bg-transparent rounded-md">
                         </div>
                         <div class="grid grid-cols-2 gap-4">
                             <div>
@@ -57,15 +40,9 @@
                         <div>
                             <label class="block text-sm font-medium text-gray-700" asp-for="Email">Email Address</label>
                             <input type="email" asp-for="Email" class="mt-1 block w-full px-2 py-2 border-2 border-gray-400 bg-transparent rounded-md shadow-sm focus:border-green-500 focus:ring-green-500">
-
                             <span asp-validation-for="Email" class="text-red-500 text-sm"></span>
-
-
                         </div>
-
                     </div>
-
-                    <!-- Right Column -->
                     <div class="flex flex-col items-center space-y-4">
                         @if (!string.IsNullOrEmpty(Model.ProfilePictureUrl))
                         {
@@ -80,33 +57,23 @@
                                 </g>
                             </svg>
                         }
-
                         <label for="ProfilePicture" class="flex bg-[#4D7766] hover:bg-gray-700 text-[#ECE7E1] text-base px-3 py-2 outline-none rounded-md w-max cursor-pointer mx-auto font-[sans-serif]">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 mr-2 fill-white inline" viewBox="0 0 32 32">
-                                <path d="M23.75 11.044a7.99 7.99 0 0 0-15.5-.009A8 8 0 0 0 9 27h3a1 1 0 0 0 0-2H9a6 6 0 0 1-.035-12 1.038 1.038 0 0 0 1.1-.854 5.991 5.991 0 0 1 11.862 0A1.08 1.08 0 0 0 23 13a6 6 0 0 1 0 12h-3a1 1 0 0 0 0 2h3a8 8 0 0 0 .75-15.956z" />
-                                <path d="M20.293 19.707a1 1 0 0 0 1.414-1.414l-5-5a1 1 0 0 0-1.414 0l-5 5a1 1 0 0 0 1.414 1.414L15 16.414V29a1 1 0 0 0 2 0V16.414z" />
-                            </svg>
                             Upload
                             <input type="file" id="ProfilePicture" name="ProfilePicture" class="hidden" accept="image/*" onchange="previewImage(this);" />
                         </label>
-                        <div>
-
-                            <button type="submit" class="mt-6 px-6 py-2 bg-[#4D7766] text-[#ECE7E1] rounded-md hover:bg-gray-700 cursor-pointer outline-none">Update Profile</button>
+                        <button type="submit" class="mt-6 px-6 py-2 bg-[#4D7766] text-[#ECE7E1] rounded-md hover:bg-gray-700 cursor-pointer outline-none">Update Profile</button>
+                    </div>
                 </form>
             </div>
         </div>
 
-
-
-        <!--Change Password-->
+        <!-- Change Password -->
         <div class="border-2 border-gray-400 p-4 rounded-xl">
             <div class="mx-3 my-3">
                 <div class="mb-4">
                     <h2 class="text-2xl font-bold text-[#4D7766]">Change Password</h2>
                 </div>
-
                 <div class="border-b-2 border-gray-400 mb-4"></div>
-
                 <form asp-action="ChangePassword" asp-controller="Setting" method="post" class="space-y-4">
                     @Html.AntiForgeryToken()
                     <div>
@@ -130,6 +97,7 @@
             </div>
         </div>
     </div>
+
 </div>
 
 <style>
@@ -147,7 +115,11 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
-}  <script>
+
+}  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+<script>
        function previewImage(input) {
            if (input.files && input.files[0]) {
                const reader = new FileReader();
@@ -180,15 +152,27 @@
                profileImage.onerror = function () {
                    // If image fails to load, replace with default SVG
                    const svg = `<svg xmlns="http://www.w3.org/2000/svg" class="h-24 w-24 text-[#4D7766]" viewBox="0 0 48 48" id="profileImage">
-                                                                             <g fill="currentColor">
-                                                                                 <path d="M32 20a8 8 0 1 1-16 0a8 8 0 0 1 16 0" />
-                                                                                 <path fill-rule="evenodd" d="M23.184 43.984C12.517 43.556 4 34.772 4 24C4 12.954 12.954 4 24 4s20 8.954 20 20s-8.954 20-20 20h-.274q-.272 0-.542-.016M11.166 36.62a3.028 3.028 0 0 1 2.523-4.005c7.796-.863 12.874-.785 20.632.018a2.99 2.99 0 0 1 2.498 4.002A17.94 17.94 0 0 0 42 24c0-9.941-8.059-18-18-18S6 14.059 6 24c0 4.916 1.971 9.373 5.166 12.621" clip-rule="evenodd" />
-                                                                             </g>
-                                                                         </svg>`;
+                                                                                                                       <g fill="currentColor">
+                                                                                                                           <path d="M32 20a8 8 0 1 1-16 0a8 8 0 0 1 16 0" />
+                                                                                                                           <path fill-rule="evenodd" d="M23.184 43.984C12.517 43.556 4 34.772 4 24C4 12.954 12.954 4 24 4s20 8.954 20 20s-8.954 20-20 20h-.274q-.272 0-.542-.016M11.166 36.62a3.028 3.028 0 0 1 2.523-4.005c7.796-.863 12.874-.785 20.632.018a2.99 2.99 0 0 1 2.498 4.002A17.94 17.94 0 0 0 42 24c0-9.941-8.059-18-18-18S6 14.059 6 24c0 4.916 1.971 9.373 5.166 12.621" clip-rule="evenodd" />
+                                                                                                                       </g>
+                                                                                                                   </svg>`;
                    const temp = document.createElement('div');
                    temp.innerHTML = svg;
                    profileImage.parentNode.replaceChild(temp.firstChild, profileImage);
                };
+           }
+       });
+       $(document).ready(function () {
+           var successMessage = @Html.Raw(Json.Serialize(TempData["SuccessMessage"]));
+           var errorMessage = @Html.Raw(Json.Serialize(TempData["ErrorMessage"]));
+
+           if (successMessage) {
+               toastr.success(successMessage);
+           }
+
+           if (errorMessage) {
+               toastr.error(errorMessage);
            }
        });
 </script>

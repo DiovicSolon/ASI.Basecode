@@ -3,11 +3,6 @@
     var monthlyExpenses = ViewData["MonthlyExpenses"] as IEnumerable<dynamic>;
     var categories = ViewData["Categories"] as List<string>;
 }
-
-
-
-
-
 <div class="w-full bg-[#ECE7E1] h-screen px-8">
     <div class="flex-1 p-4">
         <div class="flex justify-end mb-4">
@@ -39,7 +34,7 @@
                 <div class="flex justify-evenly items-center mt-4">
                     <div class="flex flex-col items-center">
                         <p class="text-3xl font-bold text-[#4D7766] w-1/2">Total Expenses</p>
-                        <p class="text-3xl font-bold text-[#4D7766]">Php @totalExpenses</p>
+                        <p class="text-3xl font-bold text-[#4D7766]">@totalExpenses</p>
                     </div>
                 </div>
             </div>
@@ -57,7 +52,16 @@
         </div>
     </div>
 </div>
+<style>
+    .scrollbar-hidden {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
 
+        .scrollbar-hidden::-webkit-scrollbar {
+            display: none;
+        }
+</style>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     // Prepare chart data dynamically from the server

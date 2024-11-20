@@ -7,46 +7,41 @@
 <div>
     @Html.AntiForgeryToken()
 </div>
-<div class="bg-red-100 flex items-center justify-center h-screen">
 
-    <div class="flex w-full h-full bg-white overflow-hidden">
-        <!-- Left Section (Logo) -->
-        <div class="w-1/2 bg-[#4D7766] p-8 flex items-center justify-center">
-            <div class="text-center">
-                <h1 class="text-5xl font-bold text-[#ECE7E1]">.budg<span class="text-[#ECE7E1]">ET</span></h1>
-                <p class="text-[#ECE7E1] mt-2">expense tracker</p>
+<div class="flex w-full h-screen bg-white overflow-hidden">
+    <div class="w-1/2 bg-[#4D7766] p-8 flex items-center justify-center">
+        <img src="~/images/logo2.png"
+             class="h-auto w-auto"
+             alt="logo">
+    </div>
+    <div class="w-1/2 p-32 bg-[#ECE7E1] items-center justify-center">
+        <div class="w-full max-w-md ml-12">
+            <h2 class="text-3xl font-black text-[#4D7766] mb-6 text-center">Log In</h2>
+            <form method="post" action="/Account/Login" id="loginForm" class="space-y-6">
+                <div>
+                    <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
+                    <input asp-for="UserName" type="text" id="username" name="username" class="mt-1 w-full px-2 py-2  border-2 border-gray-400 bg-transparent rounded-md">
+                    <span asp-validation-for="UserName" class="text-danger"></span>
+                </div>
+                <div>
+                    <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+                    <input asp-for="Password" type="password" id="password" name="password" class="mt-1 w-full bg-transparent px-2 py-2 border-2 border-gray-400 rounded-md">
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+                <button type="submit" class="w-full py-2 bg-[#4D7766] text-white font-semibold rounded-md hover:bg-gray-700 cursor-pointer outline-none transition duration-200">Log In</button>
+            </form>
+            <div class="mt-4 ml-2">
+                <a href="#" class="text-sm text-black hover:underline">Forgot password?</a>
             </div>
-        </div>
-
-        <!-- Right Section (Form) -->
-        <div class="w-1/2 p-32 bg-[#ECE7E1] items-center justify-center">
-            <div class="w-full max-w-md ml-12">
-                <h2 class="text-3xl font-bold text-[#4D7766] mb-6 text-center">Log In</h2>
-                <form method="post" action="/Account/Login" id="loginForm" class="space-y-6">
-                    <div>
-                        <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
-                        <input asp-for="UserName" type="text" id="username" name="username" class="mt-1 block w-full px-2 py-2 border-solid border-2 border-gray-400 bg-transparent rounded-md focus:outline-none focus:ring-2 focus:ring-teal-600">
-                        <span asp-validation-for="UserName" class="text-danger"></span>
-                    </div>
-                    <div>
-                        <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
-                        <input asp-for="Password" type="password" id="password" name="password" class="mt-1 block w-full bg-transparent px-2 py-2 border-solid border-2 border-gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-600">
-                        <span asp-validation-for="Password" class="text-danger"></span>
-                    </div>
-                    <button type="submit" class="w-full py-2 bg-[#4D7766] text-white font-semibold rounded-md hover:bg-teal-800 transition duration-200">Log In</button>
-                </form>
-                <div class="mt-4 ml-2">
-                    <a href="#" class="text-sm text-black hover:underline">Forgot password?</a>
-                </div>
-                <div class="border-b-2 border-gray-400 mt-4 mb-2 mx-2"></div>
-                <div class="mt-4 text-center">
-                    <span class="text-sm text-black">No account yet? </span>
-                    <a asp-controller="Account" asp-action="Register" class="text-sm text-[#4D7766] font-bold hover:underline">Register</a>
-                </div>
+            <div class="border-b-2 border-gray-400 mt-4 mb-2 mx-2"></div>
+            <div class="mt-4 text-center">
+                <span class="text-sm text-black">No account yet? </span>
+                <a asp-controller="Account" asp-action="Register" class="text-sm text-[#4D7766] font-bold hover:underline hover:text-gray-700">Register</a>
             </div>
         </div>
     </div>
 </div>
+
 
 @section scripts {
     <script>
