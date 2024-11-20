@@ -1,88 +1,57 @@
 ﻿@model ASI.Basecode.Data.Models.Category
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Category</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.3/css/bootstrap.min.css">
-    <style>
-        body {
-            background-color: #f8f9fa;
-        }
-
-        .container {
-            margin-top: 50px;
-            max-width: 600px;
-        }
-
-        h2 {
-            margin-bottom: 20px;
-        }
-
-        .btn-primary {
-            color: #fd4141;
-            background-color: #202225;
-            border-color: #b9c2cf;
-        }
-
-        .alert-success {
-            color: #23ca1d;
-            background-color: #353736;
-            border-color: #cfaa26;
-            margin-bottom: 20px;
-        }
-
-        .alert-danger {
-            color: #fd4141;
-            background-color: #202225;
-            border-color: #fd4141;
-            margin-bottom: 20px;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h2 class="text-center">Edit Category</h2>
-        @if (TempData["SuccessMessage"] != null)
-        {
-            <div class="alert alert-success">
-                @TempData["SuccessMessage"]
-            </div>
-        }
-        @if (TempData["ErrorMessage"] != null)
-        {
-            <div class="alert alert-danger">
-                @TempData["ErrorMessage"]
-            </div>
-        }
-        <form asp-action="Edit" asp-controller="Category" method="post">
-            @Html.AntiForgeryToken()
-            <input type="hidden" asp-for="CategoryId" />
-            <input type="hidden" asp-for="UserName" />
-            <input type="hidden" asp-for="DateCreated" />
-
-            <div class="mb-3">
-                <label asp-for="CategoryName" class="form-label">Category Name</label>
-                <input asp-for="CategoryName" class="form-control" required />
-                <span asp-validation-for="CategoryName" class="text-danger"></span>
-            </div>
-
-            <div class="mb-3">
-                <label class="form-label">Date Created</label>
-                <input class="form-control" value="@Model.DateCreated.ToString("MM/dd/yyyy")" disabled />
-            </div>
-
-            <div class="d-flex gap-2">
-                <button type="submit" class="btn btn-primary">Update Category</button>
-                <a asp-action="Index" class="btn btn-secondary">Back to List</a>
-            </div>
-        </form>
+<div class="w-full bg-[#ECE7E1] h-screen px-8">
+    <div class="flex-1 p-4 ">
+        <div class="flex justify-end mb-4">
+            <img src="~/images/logo.png"
+                 class="h-auto w-auto"
+                 alt="logo">
+        </div>
     </div>
+    <div class="border-2 border-gray-400 p-4 rounded-xl">
+        <div class="mx-3 my-3">
+            <h2 class="text-3xl font-bold text-[#4D7766] mb-4">Edit Category</h2>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation/1.19.3/jquery.validate.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>
-</body>
-</html>
+            <div class="border-b-2 border-gray-400 mb-4"></div>
+
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="alert alert-success">
+                    @TempData["SuccessMessage"]
+                </div>
+            }
+            @if (TempData["ErrorMessage"] != null)
+            {
+                <div class="alert alert-danger">
+                    @TempData["ErrorMessage"]
+                </div>
+            }
+            <form asp-action="Edit" asp-controller="Category" method="post">
+                @Html.AntiForgeryToken()
+                <input type="hidden" asp-for="CategoryId" />
+                <input type="hidden" asp-for="UserName" />
+                <input type="hidden" asp-for="DateCreated" />
+
+                <div class="mb-3">
+                    <label asp-for="CategoryName" class="text-[#252525] text-base block mb-2">Category Name</label>
+                    <input asp-for="CategoryName" class="w-full px-2 py-2 border-2 border-gray-400 bg-transparent rounded-md" required />
+                    <span asp-validation-for="CategoryName" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label class="text-[#252525] text-base block mb-2">Date Created</label>
+                    <input class="w-full px-2 py-2 border-2 border-gray-400 bg-transparent rounded-md" value="@Model.DateCreated.ToString("MM/dd/yyyy")" disabled />
+                </div>
+
+
+                <div class="flex items-center justify-end gap-4 mt-4">
+                    <button type="button" onclick="window.location.href='@Url.Action("Index", "Category")'" class="bg-transparent rounded-lg border-2 border-[#5E5E5E] text-[#5E5E5E] font-semibold py-[6px] px-[10px]">Cancel</button>
+                    <button type="submit" class="bg-[#4D7766] rounded-lg py-2 px-4 text-white font-semibold">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation/1.19.3/jquery.validate.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>

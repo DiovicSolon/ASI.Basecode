@@ -46,28 +46,44 @@ namespace ASI.Basecode.WebApp.Controllers
             }
         }
 
-        public IActionResult ExpenseTable(int page = 1, int pageSize = 7)
+        public IActionResult ExpenseTable(int page = 1, int pageSize = 7, string category = null, DateTime? startDate = null, DateTime? endDate = null)
         {
             try
             {
                 string userId = GetLoggedInUserId();
 
-                // Retrieve all expenses for the logged-in user
+                var categories = _categoryService.GetAllCategory()
+                    .Where(c => c.UserName == userId)
+                    .ToList();
+                ViewBag.Categories = categories;
+
+                startDate ??= DateTime.Today.AddDays(-3);
+                endDate ??= DateTime.Today.AddDays(+4);
+
                 var totalExpenses = _expenseService.GetAllExpenses()
-                                                   .Where(e => e.UserName == userId)
-                                                   .ToList();
+                                                   .Where(e => e.UserName == userId);
 
-                // Apply a limit to the records per page (limit to 7)
-                var expenses = totalExpenses.Skip((page - 1) * pageSize)
-                                            .Take(pageSize)  // Limit to 7 records
-                                            .ToList();
+                if (!string.IsNullOrEmpty(category))
+                {
+                    totalExpenses = totalExpenses.Where(e => e.Category == category);
+                }
 
-                // Calculate total pages
-                var totalPages = (int)Math.Ceiling((double)totalExpenses.Count / pageSize);
+                totalExpenses = totalExpenses.Where(e => e.Date >= startDate && e.Date <= endDate);
 
-                // Pass expenses, current page, and total pages to the view
+                var filteredExpenses = totalExpenses.ToList();
+
+                var expenses = filteredExpenses.Skip((page - 1) * pageSize)
+                                               .Take(pageSize)
+                                               .ToList();
+
+                var totalPages = (int)Math.Ceiling((double)filteredExpenses.Count / pageSize);
+
                 ViewData["CurrentPage"] = page;
                 ViewData["TotalPages"] = totalPages;
+                ViewData["SelectedCategory"] = category;
+                ViewData["StartDate"] = startDate?.ToString("yyyy-MM-dd");
+                ViewData["EndDate"] = endDate?.ToString("yyyy-MM-dd");
+
                 return View(expenses);
             }
             catch (Exception ex)
