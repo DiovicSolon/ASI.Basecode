@@ -65,10 +65,7 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     // Prepare chart data dynamically from the server
-    const labels = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(
-        monthlyExpenses.Select(e => "Month " + e.Month)));
-    const data = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(
-        monthlyExpenses.Select(e => e.Total)));
+ 
 
     // Initialize the line chart
     const ctx = document.getElementById('lineChart').getContext('2d');

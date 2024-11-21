@@ -39,6 +39,34 @@ namespace ASI.Basecode.WebApp.Controllers
 
         [HttpGet]
         [AllowAnonymous]
+        public IActionResult ForgotPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public IActionResult ForgotPassword(string email, string newPassword)
+        {
+            var user = _userService.GetUserByEmail(email);
+
+            if (user == null)
+            {
+                TempData["ErrorMessage"] = "Email does not exist.";
+                return View();
+            }
+
+            user.Password = newPassword; // Hash this password in UserService.
+            _userService.UpdateUser(user);
+
+            TempData["SuccessMessage"] = "Password has been updated successfully.";
+            return RedirectToAction("Login");
+        }
+   
+
+
+    [HttpGet]
+        [AllowAnonymous]
         public IActionResult Login()
         {
             TempData["returnUrl"] = System.Net.WebUtility.UrlDecode(HttpContext.Request.Query["ReturnUrl"]);
@@ -111,5 +139,10 @@ namespace ASI.Basecode.WebApp.Controllers
             await _signInManager.SignOutAsync();
             return RedirectToAction("Login", "Account");
         }
+
+
     }
+
+
+
 }

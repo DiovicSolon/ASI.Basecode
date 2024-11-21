@@ -30,9 +30,14 @@
                 </div>
                 <button type="submit" class="w-full py-2 bg-[#4D7766] text-white font-semibold rounded-md hover:bg-gray-700 cursor-pointer outline-none transition duration-200">Log In</button>
             </form>
+
             <div class="mt-4 ml-2">
-                <a href="#" class="text-sm text-black hover:underline">Forgot password?</a>
+                <a asp-controller="Account" asp-action="ForgotPassword" class="text-sm text-black hover:underline">Forgot password?</a>
+
+
             </div>
+
+
             <div class="border-b-2 border-gray-400 mt-4 mb-2 mx-2"></div>
             <div class="mt-4 text-center">
                 <span class="text-sm text-black">No account yet? </span>

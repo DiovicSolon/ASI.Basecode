@@ -10,5 +10,8 @@ namespace ASI.Basecode.Services.Interfaces
         LoginResult AuthenticateUser(string username, string password, ref User user);
         void AddUser(UserViewModel model);
         Task GetUserByUserNameAsync(string userName);
+
+        User GetUserByEmail(string email);
+        void UpdateUser(User user);
     }
 }

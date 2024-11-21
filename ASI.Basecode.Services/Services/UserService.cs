@@ -57,5 +57,29 @@ namespace ASI.Basecode.Services.Services
         {
             throw new NotImplementedException();
         }
+
+        public User GetUserByEmail(string email)
+        {
+            // Fetch the user by email from the repository
+            return _repository.GetUsers().FirstOrDefault(user => user.Email == email);
+        }
+
+        public void UpdateUser(User user)
+        {
+            // Update user details in the repository
+            var existingUser = _repository.GetUsers().FirstOrDefault(u => u.Id == user.Id);
+            if (existingUser != null)
+            {
+                existingUser.Password = PasswordManager.EncryptPassword(user.Password);
+                existingUser.UpdatedTime = DateTime.Now;
+                existingUser.UpdatedBy = System.Environment.UserName;
+
+                _repository.UpdateUser(existingUser);
+            }
+            else
+            {
+                throw new InvalidDataException("User not found.");
+            }
+        }
     }
 }

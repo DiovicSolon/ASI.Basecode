@@ -15,7 +15,7 @@ namespace ASI.Basecode.WebApp.Controllers
         {
             _context = context;
         }
-
+   
         public IActionResult ViewReport()
         {
             // Fetch total expenses

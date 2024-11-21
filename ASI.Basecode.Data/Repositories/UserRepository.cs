@@ -32,6 +32,21 @@ namespace ASI.Basecode.Data.Repositories
             UnitOfWork.SaveChanges();
         }
 
+        public void UpdateUser(User user)
+        {
+            var existingUser = this.GetDbSet<User>().FirstOrDefault(u => u.Id == user.Id);
+            if (existingUser == null)
+            {
+                throw new InvalidOperationException("User not found.");
+            }
+
+            // Update fields as needed
+            existingUser.Password = user.Password;
+            existingUser.UpdatedTime = DateTime.UtcNow; // Example field for tracking updates
+
+            UnitOfWork.SaveChanges();
+        }  
+
     }
 }
     
