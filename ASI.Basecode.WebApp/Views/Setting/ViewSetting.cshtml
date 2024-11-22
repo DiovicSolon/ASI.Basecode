@@ -9,7 +9,7 @@
         </div>
     </div>
     <div class="overflow-y-auto max-h-[calc(100vh-128px)] scrollbar-hidden space-y-6">
-        
+
         <!-- Account Details -->
         <div class="border-2 border-gray-400 p-4 rounded-xl">
             <div class="mx-3 my-3">
@@ -17,7 +17,7 @@
                     <h2 class="text-2xl font-bold text-[#4D7766]">Account Details</h2>
                 </div>
                 <div class="border-b-2 border-gray-400 mb-4"></div>
-                <form asp-action="UpdateAccount" asp-controller="Setting" method="post" enctype="multipart/form-data" class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+                <form asp-action="UpdateAccount" asp-controller="Setting" method="post" enctype="multipart/form-data" class="space-y-4">
                     @Html.AntiForgeryToken()
                     <input type="hidden" asp-for="Id" />
                     <div class="space-y-4">
@@ -43,16 +43,16 @@
                             <span asp-validation-for="Email" class="text-red-500 text-sm"></span>
                         </div>
                     </div>
-                    <div class="flex flex-col items-center space-y-4">
-                        @if (!string.IsNullOrEmpty(Model.ProfilePictureUrl))
-                        {
-                          
-                        }
-                        else
-                        {
-                           
-                        }
-                        
+                    @if (!string.IsNullOrEmpty(Model.ProfilePictureUrl))
+                    {
+
+                    }
+                    else
+                    {
+
+                    }
+
+                    <div class="flex justify-end">
                         <button type="submit" class="mt-6 px-6 py-2 bg-[#4D7766] text-[#ECE7E1] rounded-md hover:bg-gray-700 cursor-pointer outline-none">Update Profile</button>
                     </div>
                 </form>
@@ -108,63 +108,63 @@
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 
-}  
+}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <script>
-       function previewImage(input) {
-           if (input.files && input.files[0]) {
-               const reader = new FileReader();
+    function previewImage(input) {
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
 
-               reader.onload = function (e) {
-                   const profileImage = document.getElementById('profileImage');
+            reader.onload = function (e) {
+                const profileImage = document.getElementById('profileImage');
 
-                   if (profileImage.tagName.toLowerCase() === 'svg') {
-                       // Replace SVG with img element
-                       const img = document.createElement('img');
-                       img.src = e.target.result;
-                       img.id = 'profileImage';
-                       img.className = 'h-24 w-24 rounded-full object-cover';
-                       img.alt = 'Profile Picture';
-                       profileImage.parentNode.replaceChild(img, profileImage);
-                   } else {
-                       // Update existing img element
-                       profileImage.src = e.target.result;
-                   }
-               }
+                if (profileImage.tagName.toLowerCase() === 'svg') {
+                    // Replace SVG with img element
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.id = 'profileImage';
+                    img.className = 'h-24 w-24 rounded-full object-cover';
+                    img.alt = 'Profile Picture';
+                    profileImage.parentNode.replaceChild(img, profileImage);
+                } else {
+                    // Update existing img element
+                    profileImage.src = e.target.result;
+                }
+            }
 
-               reader.readAsDataURL(input.files[0]);
-           }
-       }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
 
-       // Add error handling for image loading
-       document.addEventListener('DOMContentLoaded', function () {
-           const profileImage = document.getElementById('profileImage');
-           if (profileImage.tagName.toLowerCase() === 'img') {
-               profileImage.onerror = function () {
-                   // If image fails to load, replace with default SVG
-                   const svg = `<svg xmlns="http://www.w3.org/2000/svg" class="h-24 w-24 text-[#4D7766]" viewBox="0 0 48 48" id="profileImage">
-                                                                                                                       <g fill="currentColor">
-                                                                                                                           <path d="M32 20a8 8 0 1 1-16 0a8 8 0 0 1 16 0" />
-                                                                                                                           <path fill-rule="evenodd" d="M23.184 43.984C12.517 43.556 4 34.772 4 24C4 12.954 12.954 4 24 4s20 8.954 20 20s-8.954 20-20 20h-.274q-.272 0-.542-.016M11.166 36.62a3.028 3.028 0 0 1 2.523-4.005c7.796-.863 12.874-.785 20.632.018a2.99 2.99 0 0 1 2.498 4.002A17.94 17.94 0 0 0 42 24c0-9.941-8.059-18-18-18S6 14.059 6 24c0 4.916 1.971 9.373 5.166 12.621" clip-rule="evenodd" />
-                                                                                                                       </g>
-                                                                                                                   </svg>`;
-                   const temp = document.createElement('div');
-                   temp.innerHTML = svg;
-                   profileImage.parentNode.replaceChild(temp.firstChild, profileImage);
-               };
-           }
-       });
-       $(document).ready(function () {
-           var successMessage = @Html.Raw(Json.Serialize(TempData["SuccessMessage"]));
-           var errorMessage = @Html.Raw(Json.Serialize(TempData["ErrorMessage"]));
+    // Add error handling for image loading
+    document.addEventListener('DOMContentLoaded', function () {
+        const profileImage = document.getElementById('profileImage');
+        if (profileImage.tagName.toLowerCase() === 'img') {
+            profileImage.onerror = function () {
+                // If image fails to load, replace with default SVG
+                const svg = `<svg xmlns="http://www.w3.org/2000/svg" class="h-24 w-24 text-[#4D7766]" viewBox="0 0 48 48" id="profileImage">
+                                                                                                                           <g fill="currentColor">
+                                                                                                                               <path d="M32 20a8 8 0 1 1-16 0a8 8 0 0 1 16 0" />
+                                                                                                                               <path fill-rule="evenodd" d="M23.184 43.984C12.517 43.556 4 34.772 4 24C4 12.954 12.954 4 24 4s20 8.954 20 20s-8.954 20-20 20h-.274q-.272 0-.542-.016M11.166 36.62a3.028 3.028 0 0 1 2.523-4.005c7.796-.863 12.874-.785 20.632.018a2.99 2.99 0 0 1 2.498 4.002A17.94 17.94 0 0 0 42 24c0-9.941-8.059-18-18-18S6 14.059 6 24c0 4.916 1.971 9.373 5.166 12.621" clip-rule="evenodd" />
+                                                                                                                           </g>
+                                                                                                                       </svg>`;
+                const temp = document.createElement('div');
+                temp.innerHTML = svg;
+                profileImage.parentNode.replaceChild(temp.firstChild, profileImage);
+            };
+        }
+    });
+    $(document).ready(function () {
+        var successMessage = @Html.Raw(Json.Serialize(TempData["SuccessMessage"]));
+        var errorMessage = @Html.Raw(Json.Serialize(TempData["ErrorMessage"]));
 
-           if (successMessage) {
-               toastr.success(successMessage);
-           }
+        if (successMessage) {
+            toastr.success(successMessage);
+        }
 
-           if (errorMessage) {
-               toastr.error(errorMessage);
-           }
-       });
+        if (errorMessage) {
+            toastr.error(errorMessage);
+        }
+    });
 </script>
