@@ -5,15 +5,15 @@
 }
 
 <div class="w-full bg-[#ECE7E1] h-screen px-6">
-    <div class="flex-1 p-3">
-        <div class="flex justify-end mb-2">
+    <div class="flex-1 p-2">
+        <div class="flex justify-end mt-2 mb-2">
             <img src="~/images/logo.png"
                  class="h-auto w-auto"
                  alt="logo">
         </div>
     </div>
     <div class="border-2 border-gray-400 p-4 rounded-xl">
-        <div class="flex justify-between items-center mb-3">
+        <div class="flex justify-between items-center mb-2">
             <div>
                 <h2 class="text-3xl font-bold text-[#4D7766]">
                     Expenses
@@ -62,10 +62,10 @@
         </div>
 
 
-        <div class="border-b-2 border-gray-400 mb-4">
+        <div class="border-b-2 border-gray-400 mb-2">
         </div>
 
-        <div class="overflow-x-auto mt-4">
+        <div class="overflow-x-auto mt-2">
             <table class="min-w-full border-collapse">
                 <thead>
                     <tr class="bg-[#ECE7E1] text-[#4D7766]">
@@ -121,7 +121,7 @@
                 </tbody>
             </table>
         </div>
-        <div class="flex items-center justify-center mt-4 gap-x-4">
+        <div class="flex items-center justify-center mt-2 gap-x-4">
             @if (ViewData["CurrentPage"] != null && ViewData["TotalPages"] != null)
             {
                 var currentPage = (int)ViewData["CurrentPage"];
@@ -168,7 +168,7 @@
             <div class="border-b-2 border-gray-400 mb-4"></div>
             <div class="p-6 text-center">
                 <p class="text-[#1D1D1D] font-bold text-base mb-1">
-                    Are you sure you want to <span class="text-[#FF0000]">delete</span> this category?
+                    Are you sure you want to <span class="text-[#FF0000]">delete</span> this expense?
                 </p>
                 <p class="text-[#7C6C6C] font-bold text-base mb-4">
                     This action is irreversible.
