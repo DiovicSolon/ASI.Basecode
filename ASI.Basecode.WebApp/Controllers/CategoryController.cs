@@ -34,20 +34,25 @@ namespace ASI.Basecode.WebApp.Controllers
 
                 // Fetch the total count of categories
                 var totalCategories = _categoryService.GetAllCategory()
-                                                       .Where(c => c.UserName == userId)
-                                                       .ToList();
+                                       .Where(c => c.UserName == userId)
+                                       .ToList();
 
-                // Apply a limit to the records per page (limit to 7)
-                var categories = totalCategories.Skip((page - 1) * pageSize)
-                                                .Take(pageSize)  // Limit to 7 records
-                                                .ToList();
+                int totalCategoriesCount = totalCategories.Count;
 
                 // Calculate total pages
-                var totalPages = (int)Math.Ceiling((double)totalCategories.Count / pageSize);
+                var totalPages = (int)Math.Ceiling((double)totalCategoriesCount / pageSize);
 
-                // Pass categories, current page, and total pages to the view
+                // Ensure page is within valid range
+                page = Math.Max(1, Math.Min(page, totalPages));
+
+                // Fetch paginated data
+                var categories = totalCategories.Skip((page - 1) * pageSize)
+                                                .Take(pageSize)
+                                                .ToList();
+
                 ViewData["CurrentPage"] = page;
                 ViewData["TotalPages"] = totalPages;
+
                 return View(categories);
             }
             catch (Exception ex)
