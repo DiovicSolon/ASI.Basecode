@@ -26,7 +26,6 @@ namespace ASI.Basecode.WebApp.Controllers
             _logger = logger;
             _uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "img", "profiles");
 
-            // Ensure uploads directory exists
             if (!Directory.Exists(_uploadsFolder))
             {
                 Directory.CreateDirectory(_uploadsFolder);
@@ -53,14 +52,7 @@ namespace ASI.Basecode.WebApp.Controllers
                 }
 
                 // Set profile picture URL in session
-                if (!string.IsNullOrEmpty(user.ProfilePictureUrl))
-                {
-                    HttpContext.Session.SetString("ProfilePicture", user.ProfilePictureUrl);
-                }
-                else
-                {
-                    HttpContext.Session.SetString("ProfilePicture", "/img/profiles/default-avatar.png");
-                }
+                UpdateProfilePictureSession(user.ProfilePictureUrl);
 
                 return View(user);
             }
@@ -71,13 +63,22 @@ namespace ASI.Basecode.WebApp.Controllers
             }
         }
 
+
+
+
+        private void UpdateProfilePictureSession(string profilePictureUrl)
+        {
+            var pictureUrl = !string.IsNullOrEmpty(profilePictureUrl)
+                ? profilePictureUrl
+                : "/img/profiles/default-avatar.png";
+
+            HttpContext.Session.SetString("ProfilePicture", pictureUrl);
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> UpdateAccount(User user, IFormFile ProfilePicture)
         {
-
-
-
             try
             {
                 var existingUser = await _context.Users.FindAsync(user.Id);
@@ -87,10 +88,8 @@ namespace ASI.Basecode.WebApp.Controllers
                     return RedirectToAction(nameof(ViewSetting));
                 }
 
-                // Handle profile picture upload
                 if (ProfilePicture != null && ProfilePicture.Length > 0)
                 {
-                    // Validate file type
                     var allowedTypes = new[] { "image/jpeg", "image/png", "image/gif" };
                     if (!allowedTypes.Contains(ProfilePicture.ContentType.ToLower()))
                     {
@@ -98,7 +97,6 @@ namespace ASI.Basecode.WebApp.Controllers
                         return RedirectToAction(nameof(ViewSetting));
                     }
 
-                    // Validate file size (e.g., 5MB max)
                     if (ProfilePicture.Length > 5 * 1024 * 1024)
                     {
                         TempData["ErrorMessage"] = "File size too large. Maximum size is 5MB.";
@@ -129,7 +127,7 @@ namespace ASI.Basecode.WebApp.Controllers
                     existingUser.ProfilePictureUrl = $"/img/profiles/{uniqueFileName}";
 
                     // Update session
-                    HttpContext.Session.SetString("ProfilePicture", existingUser.ProfilePictureUrl);
+                    UpdateProfilePictureSession(existingUser.ProfilePictureUrl);
                 }
 
                 // Update user fields
@@ -224,5 +222,7 @@ namespace ASI.Basecode.WebApp.Controllers
                 return RedirectToAction(nameof(ViewSetting));
             }
         }
+
+
     }
 }

@@ -1,195 +1,116 @@
 ﻿@{
-    var totalExpenses = ViewData["TotalExpenses"] as decimal?;
-    var monthlyExpenses = ViewData["MonthlyExpenses"] as IEnumerable<dynamic>;
-    var categories = ViewData["Categories"] as List<string>;
+    ViewData["Title"] = "Expense Report";
 }
-<div class="w-full bg-[#ECE7E1] h-screen px-8">
-    <div class="flex-1 p-4">
-        <div class="flex justify-end mb-4">
-            <img src="~/images/logo.png" class="h-auto w-auto" alt="logo">
-        </div>
+<div class="container mx-auto p-6">
+    <!-- Filter Form -->
+    <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+        <form id="filter-form" method="get" action="/Report/ViewReport" class="flex flex-wrap gap-4 justify-between">
+            <!-- Category Dropdown -->
+            <div class="flex flex-col">
+                <label for="category" class="text-gray-600 text-sm mb-1">Category</label>
+                <select id="category" name="category" class="border-2 border-gray-400 rounded-lg bg-transparent py-2 px-3">
+                    <option value="">All Categories</option>
+                    @foreach (var category in ViewBag.Categories)
+                    {
+                        <option value="@category.CategoryName" >
+                             
+                            @category.CategoryName
+                        </option>
+                    }
+                </select>
+            </div>
+
+            <!-- Start Date Input -->
+            <div class="flex flex-col">
+                <label for="startDate" class="text-gray-600 text-sm mb-1">Start Date</label>
+                <input type="date" id="startDate" name="startDate" 
+                       value="@ViewBag.StartDate"
+                       class="border-2 border-gray-400 rounded-lg bg-transparent py-2 px-3">
+            </div>
+
+            <!-- End Date Input -->
+            <div class="flex flex-col">
+                <label for="endDate" class="text-gray-600 text-sm mb-1">End Date</label>
+                <input type="date" id="endDate" name="endDate" 
+                       value="@ViewBag.EndDate"
+                       class="border-2 border-gray-400 rounded-lg bg-transparent py-2 px-3">
+            </div>
+
+            <!-- Generate Report Button -->
+            <div class="flex items-end">
+                <button type="submit" class="bg-[#4D7766] text-white px-4 py-2 rounded-lg hover:bg-opacity-90">
+                    Generate Report
+                </button>
+            </div>
+        </form>
     </div>
-    <div class="overflow-y-auto max-h-[calc(100vh-128px)] scrollbar-hidden">
-        <div class="border-2 border-gray-400 p-4 rounded-xl">
-            <div class="mx-3 my-3">
-                <div class="flex items-center justify-between mb-4">
-                    <h2 class="text-2xl font-bold text-[#4D7766]">Expense Summary</h2>
-                </div>
 
-                <div class="border-b-2 border-gray-400 mb-4"></div>
-                <div class="flex items-center justify-end gap-x-2">
-                    <select class="border-2 border-gray-400 rounded-lg p-2 bg-transparent">
-                        @foreach (var category in categories)
-                        {
-                            <option>@category</option>
-                        }
-                    </select>
-                    <input class="px-2 py-2 border-2 border-gray-400 bg-transparent rounded-md" type="date" />
-                </div>
-                <div class="flex justify-evenly items-center mt-4">
-                    <div class="flex flex-col items-center">
-                        <p class="text-3xl font-bold text-[#4D7766] w-1/2">Total Expenses</p>
-                        <p class="text-3xl font-bold text-[#4D7766]">@totalExpenses</p>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <!-- Total Expenses Card -->
+    <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+        <h2 class="text-2xl font-bold mb-4 text-center text-[#4D7766]">Total Expenses</h2>
+        <p class="text-4xl font-bold text-center text-[#4D7766]">
+            ₱@ViewBag.TotalExpenses.ToString("N2")
+        </p>
+    </div>
 
-        <div class="border-2 border-gray-400 p-4 rounded-xl mt-4">
-            <div class="mx-3 my-3">
-                <h2 class="text-2xl font-bold text-[#4D7766] mb-4">Expense Trends</h2>
-                <div class="border-b-2 border-gray-400 mb-4"></div>
-            </div>
-            <div>
-                <!-- Line chart display -->
-                <canvas id="lineChart" class="w-full h-64"></canvas>
-            </div>
-        </div>
-
-        <div class="border-2 border-gray-400 p-4 rounded-xl mt-4 mb-8">
-            <div class="mx-3 my-3">
-
-                <div class="mb-4">
-                    <h2 class="text-2xl font-bold text-[#4D7766]">
-                        Generate Report
-                    </h2>
-                </div>
-
-                <div class="border-b-2 border-gray-400 mb-4"></div>
-
-                <div class="space-x-2 flex items-center justify-end">
-
-                    <!-- Category Dropdown -->
-                    <div class="flex flex-col items-start">
-                        <label for="category" class="text-[#4D7766] text-sm ml-1 font-semibold">Category</label>
-                        <select id="category" class="border-2 border-gray-400 rounded-lg bg-transparent py-[3px] px-1">
-                            <option>Maintenance</option>
-                        </select>
-                    </div>
-
-                    <!-- Start Date Input -->
-                    <div class="flex flex-col items-start">
-                        <label for="start-date" class="text-[#4D7766] text-sm ml-1 font-semibold">Start</label>
-                        <input id="start-date" type="date" class="border-2 border-gray-400 rounded-lg bg-transparent py-[3px] px-1" />
-                    </div>
-
-                    <!-- End Date Input -->
-                    <div class="flex flex-col items-start">
-                        <label for="end-date" class="text-[#4D7766] text-sm ml-1 font-semibold">End</label>
-                        <input id="end-date" type="date" class="border-2 border-gray-400 rounded-lg bg-transparent py-[3px] px-1" />
-                    </div>
-                </div>
-                <div class="overflow-x-auto mt-4">
-                    <table class="min-w-full border-collapse">
-                        <thead>
-                            <tr class="bg-[#ECE7E1] text-[#4D7766]">
-                                <th scope="col" class="text-center text-[#656565] py-3 px-6 text-sm font-medium uppercase">Title</th>
-                                <th scope="col" class="text-center text-[#656565] py-3 px-6 text-sm font-medium uppercase">Category</th>
-                                <th scope="col" class="text-center text-[#656565] py-3 px-6 text-sm font-medium uppercase">Date</th>
-                                <th scope="col" class="text-center text-[#656565] py-3 px-6 text-sm font-medium uppercase">Amount</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr class="odd:bg-[#F4EADD] even:bg-[#B3D3C2]">
-                                <td class="py-3 px-6 text-center text-[#1D1D1D] font-bold"></td>
-                                <td class="py-3 px-6 text-center text-[#1D1D1D] font-bold"></td>
-                                <td class="py-3 px-6 text-center text-[#1D1D1D] font-bold"></td>
-                                <td class="py-3 px-6 text-center text-[#1D1D1D] font-bold"></td>
-                            </tr>
-                            <tr>
-                                <td colspan="4" class="text-center">No Data Found</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="flex items-center justify-center mt-4 gap-x-4">
-                    <!-- Previous Button -->
-                    <button class="bg-[#4D7766] p-1 rounded-full text-white hover:bg-gray-700 cursor-pointer outline-noner">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="text-white h-6 w-6" viewBox="0 0 24 24">
-                            <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="m14 17l-5-5m0 0l5-5" />
-                        </svg>
-                    </button>
-
-                    <!-- Page Number -->
-                    <span>
-                        <p>Page 1 of 10</p>
-                    </span>
-
-                    <!-- Next Button -->
-                    <button class="bg-[#4D7766] p-1 rounded-full text-white hover:bg-gray-700 cursor-pointer outline-none">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="text-white h-6 w-6" viewBox="0 0 24 24">
-                            <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="m10 17l5-5m0 0l-5-5" />
-                        </svg>
-                    </button>
-                </div>
-                <div class="flex items-center justify-end">
-                    <div class="flex flex-col items-start">
-                        <label class="text-black text-base font-semibold">Total Expense</label>
-                        <p class="text-2xl text-[#4D7766] font-bold underline">
-                            35,000.00
-                        </p>
-                    </div>
-                </div>
-
-            </div>
+    <!-- Monthly Expenses Chart -->
+    <div class="bg-white rounded-lg shadow-lg p-6">
+        <h2 class="text-2xl font-bold mb-4 text-center text-[#4D7766]">Monthly Expenses Overview</h2>
+        <div class="w-full" style="height: 400px;">
+            <canvas id="monthlyExpensesChart"></canvas>
         </div>
     </div>
 </div>
-<style>
-    .scrollbar-hidden {
-        -ms-overflow-style: none;
-        scrollbar-width: none;
-    }
 
-        .scrollbar-hidden::-webkit-scrollbar {
-            display: none;
-        }
-</style>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-    // Prepare chart data dynamically from the server
- 
+@section Scripts {
+    <!-- Include Chart.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+    <script>
+        // Get the data from ViewBag
+        var monthlyLabels = @Html.Raw(ViewBag.MonthlyLabels);
+        var monthlyData = @Html.Raw(ViewBag.MonthlyData);
 
-    // Initialize the line chart
-    const ctx = document.getElementById('lineChart').getContext('2d');
-    const lineChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: labels,
-            datasets: [{
-                label: 'Expenses Over Time',
-                data: data,
-                borderColor: '#4D7766',
-                backgroundColor: 'rgba(77, 119, 102, 0.2)',
-                borderWidth: 2,
-                fill: true,
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    display: true,
-                    position: 'top',
-                },
+        // Create the chart
+        var ctx = document.getElementById('monthlyExpensesChart').getContext('2d');
+        var chart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: monthlyLabels,
+                datasets: [{
+                    label: 'Monthly Expenses',
+                    data: monthlyData,
+                    backgroundColor: '#4D7766',
+                    borderColor: '#4D7766',
+                    borderWidth: 1
+                }]
             },
-            scales: {
-                x: {
-                    title: {
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
                         display: true,
-                        text: 'Months'
+                        position: 'top'
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function (context) {
+                                return '₱' + context.formattedValue;
+                            }
+                        }
                     }
                 },
-                y: {
-                    title: {
-                        display: true,
-                        text: 'Expenses (Php)'
-                    },
-                    beginAtZero: true
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function (value, index, values) {
+                                return '₱' + value.toLocaleString();
+                            }
+                        }
+                    }
                 }
             }
-        }
-    });
-</script>
-
+        });
+    </script>
+}

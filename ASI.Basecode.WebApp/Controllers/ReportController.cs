@@ -4,85 +4,94 @@ using System.Linq;
 using ASI.Basecode.Data;
 using ASI.Basecode.Data.Models;
 using System.Collections.Generic;
+using Newtonsoft.Json;
+using ASI.Basecode.Services.Interfaces;
 
 namespace ASI.Basecode.WebApp.Controllers
 {
     public class ReportController : Controller
     {
         private readonly AsiBasecodeDBContext _context;
+        private readonly ICategoryService _categoryService;
 
-        public ReportController(AsiBasecodeDBContext context)
+        public ReportController(AsiBasecodeDBContext context, ICategoryService categoryService)
         {
             _context = context;
-        }
-   
-        public IActionResult ViewReport()
-        {
-            // Fetch total expenses
-            var totalExpenses = _context.Expenses.Sum(e => e.Amount);
-
-            // Fetch expenses grouped by month for the chart
-            var monthlyExpenses = _context.Expenses
-                .GroupBy(e => e.Date.Month)
-                .Select(group => new
-                {
-                    Month = group.Key,
-                    Total = group.Sum(e => e.Amount)
-                })
-                .OrderBy(e => e.Month)
-                .ToList();
-
-            // Fetch distinct categories for dropdown
-            var categories = _context.Categories
-                .Select(c => c.CategoryName)
-                .Distinct()
-                .ToList();
-
-            // Pass data to the view
-            ViewData["TotalExpenses"] = totalExpenses;
-            ViewData["MonthlyExpenses"] = monthlyExpenses;
-            ViewData["Categories"] = categories;
-
-            return View();
+            _categoryService = categoryService;
         }
 
-        [HttpGet]
-        public IActionResult GenerateReport(string category, DateTime? startDate, DateTime? endDate)
+        private string GetLoggedInUserId()
         {
-            // Filter expenses based on category and date range
-            var filteredExpenses = _context.Expenses.AsQueryable();
+            return HttpContext.User.Identity.Name;
+        }
 
+        public IActionResult ViewReport(string category = null, DateTime? startDate = null, DateTime? endDate = null)
+        {
+            var userId = GetLoggedInUserId();
+
+            // Get categories for the filter dropdown
+            var categories = _categoryService.GetAllCategory()
+                .Where(c => c.UserName == userId)
+                .ToList();
+            ViewBag.Categories = categories;
+
+            // Set default date range if not provided
+            startDate ??= DateTime.Today.AddDays(-30);  // Default to last 30 days
+            endDate ??= DateTime.Today;
+
+            // Build the query with filters
+            var query = _context.Expenses.Where(e => e.UserName == userId);
+
+            // Apply category filter if selected
             if (!string.IsNullOrEmpty(category))
             {
-                filteredExpenses = filteredExpenses.Where(e => e.Category == category);
+                query = query.Where(e => e.Category == category);
             }
 
-            if (startDate.HasValue)
-            {
-                filteredExpenses = filteredExpenses.Where(e => e.Date >= startDate.Value);
-            }
+            // Apply date range filter
+            query = query.Where(e => e.Date >= startDate && e.Date <= endDate);
 
-            if (endDate.HasValue)
-            {
-                filteredExpenses = filteredExpenses.Where(e => e.Date <= endDate.Value);
-            }
+            // Get total expenses for the filtered data
+            var totalExpenses = query.Sum(e => e.Amount);
 
-            var reportData = filteredExpenses.Select(e => new
+            // Get monthly expenses for the filtered date range
+            var monthlyExpenses = query
+                .GroupBy(e => e.Date.Month)
+                .Select(g => new
+                {
+                    Month = g.Key,
+                    Total = g.Sum(e => e.Amount)
+                })
+                .OrderBy(x => x.Month)
+                .ToList();
+
+            // Get months range based on start and end date
+            var months = Enumerable.Range(0, ((endDate?.Year * 12 + endDate?.Month) ?? 0) -
+                                          ((startDate?.Year * 12 + startDate?.Month) ?? 0) + 1)
+                .Select(m => startDate?.AddMonths(m))
+                .Where(d => d <= endDate)
+                .ToList();
+
+            // Prepare data for all months in range (including zeros for months with no expenses)
+            var allMonths = months.Select(date => new
             {
-                e.Title,
-                e.Category,
-                e.Date,
-                e.Amount
+                Label = date?.ToString("MMMM yyyy"),
+                Amount = monthlyExpenses.FirstOrDefault(m => m.Month == date?.Month)?.Total ?? 0
             }).ToList();
 
-            // Calculate the total for filtered data
-            var totalFilteredExpense = reportData.Sum(e => e.Amount);
+            // Store filter values for the view
+            ViewBag.SelectedCategory = category;
+            ViewBag.StartDate = startDate?.ToString("yyyy-MM-dd");
+            ViewBag.EndDate = endDate?.ToString("yyyy-MM-dd");
 
-            // Return the report view with filtered data
-            ViewData["ReportData"] = reportData;
-            ViewData["TotalFilteredExpense"] = totalFilteredExpense;
+            // Prepare chart data
+            ViewBag.MonthlyLabels = JsonConvert.SerializeObject(allMonths.Select(m => m.Label));
+            ViewBag.MonthlyData = JsonConvert.SerializeObject(allMonths.Select(m => m.Amount));
+            ViewBag.TotalExpenses = totalExpenses;
 
             return View();
         }
+
+        // Add additional report-related actions here
     }
 }

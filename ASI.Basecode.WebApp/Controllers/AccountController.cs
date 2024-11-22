@@ -22,6 +22,7 @@ namespace ASI.Basecode.WebApp.Controllers
         private readonly SignInManager _signInManager;
         private readonly IUserService _userService;
         private readonly SessionManager _sessionManager;
+        private object _context;
 
         public AccountController(
             SignInManager signInManager,
@@ -34,6 +35,7 @@ namespace ASI.Basecode.WebApp.Controllers
             _signInManager = signInManager;
             _userService = userService;
             _sessionManager = new SessionManager(httpContextAccessor.HttpContext.Session);
+
         }
 
 
@@ -55,17 +57,24 @@ namespace ASI.Basecode.WebApp.Controllers
                 TempData["ErrorMessage"] = "Email does not exist.";
                 return View();
             }
+            if (newPassword.Length < 8)
+            {
+                TempData["ErrorMessage"] = "New password must be at least 8 characters long.";
+                return RedirectToAction(nameof(ForgotPassword));
+            }
 
             user.Password = newPassword; // Hash this password in UserService.
             _userService.UpdateUser(user);
 
             TempData["SuccessMessage"] = "Password has been updated successfully.";
             return RedirectToAction("Login");
+
+           
         }
-   
 
 
-    [HttpGet]
+
+        [HttpGet]
         [AllowAnonymous]
         public IActionResult Login()
         {
@@ -91,7 +100,7 @@ namespace ASI.Basecode.WebApp.Controllers
             if (loginResult == LoginResult.Success)
             {
                 await _signInManager.SignInAsync(user);
-                HttpContext.Session.SetString("UserName", user.UserName);
+                HttpContext.Session.SetString("UserName", $"{user.FirstName} {user.LastName}"); // Include LastName
                 return RedirectToAction("ExpenseTable", "Expense");
             }
 
@@ -139,6 +148,9 @@ namespace ASI.Basecode.WebApp.Controllers
             await _signInManager.SignOutAsync();
             return RedirectToAction("Login", "Account");
         }
+
+       
+
 
 
     }
