@@ -5,8 +5,8 @@
 }
 
 <div class="w-full bg-[#ECE7E1] h-screen px-8">
-    <div class="flex-1 p-4 ">
-        <div class="flex justify-end mb-2">
+    <div class="flex-1 p-2 ">
+        <div class="flex justify-end mb-2 mt-2">
             <img src="~/images/logo.png"
                  class="h-auto w-auto"
                  alt="logo">
@@ -29,7 +29,7 @@
                 </button>
             </div>
         </div>
-        <div class="border-b-2 border-gray-400 mb-4"></div>
+        <div class="border-b-2 border-gray-400 mb-2"></div>
         <div class="overflow-x-auto mt-4">
             <table class="min-w-full border-collapse">
                 <thead>
@@ -92,7 +92,7 @@
                 </tbody>
             </table>
         </div>
-        <div class="flex items-center justify-center mt-4 gap-x-4">
+        <div class="flex items-center justify-center mt-2 gap-x-4">
             @if (ViewData["CurrentPage"] != null && ViewData["TotalPages"] != null)
             {
                 var currentPage = (int)ViewData["CurrentPage"];
