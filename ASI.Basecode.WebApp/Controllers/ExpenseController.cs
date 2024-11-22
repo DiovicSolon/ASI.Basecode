@@ -52,14 +52,17 @@ namespace ASI.Basecode.WebApp.Controllers
             {
                 string userId = GetLoggedInUserId();
 
+                // Fetch all categories for the user
                 var categories = _categoryService.GetAllCategory()
-                    .Where(c => c.UserName == userId)
-                    .ToList();
+                                                 .Where(c => c.UserName == userId)
+                                                 .ToList();
                 ViewBag.Categories = categories;
 
+                // Default date range setup
                 startDate ??= DateTime.Today.AddDays(-3);
                 endDate ??= DateTime.Today.AddDays(+4);
 
+                // Filter expenses based on user, category, and date range
                 var totalExpenses = _expenseService.GetAllExpenses()
                                                    .Where(e => e.UserName == userId);
 
@@ -70,20 +73,28 @@ namespace ASI.Basecode.WebApp.Controllers
 
                 totalExpenses = totalExpenses.Where(e => e.Date >= startDate && e.Date <= endDate);
 
+                // Convert to list for pagination
                 var filteredExpenses = totalExpenses.ToList();
 
+                // Pagination logic
+                var totalPages = (int)Math.Ceiling((double)filteredExpenses.Count / pageSize);
+
+                // Ensure page is within valid range
+                page = Math.Max(1, Math.Min(page, totalPages));
+
+                // Fetch paginated data
                 var expenses = filteredExpenses.Skip((page - 1) * pageSize)
                                                .Take(pageSize)
                                                .ToList();
 
-                var totalPages = (int)Math.Ceiling((double)filteredExpenses.Count / pageSize);
-
+                // Pass data to ViewData
                 ViewData["CurrentPage"] = page;
                 ViewData["TotalPages"] = totalPages;
                 ViewData["SelectedCategory"] = category;
                 ViewData["StartDate"] = startDate?.ToString("yyyy-MM-dd");
                 ViewData["EndDate"] = endDate?.ToString("yyyy-MM-dd");
 
+                // Return the view with paginated expenses
                 return View(expenses);
             }
             catch (Exception ex)
@@ -92,8 +103,6 @@ namespace ASI.Basecode.WebApp.Controllers
                 return View("Error", new ErrorViewModel { ErrorMessage = "Failed to load expense table." });
             }
         }
-
-
 
 
         public IActionResult Create()
