@@ -49,15 +49,16 @@
                     <div class="mb-3">
                         <label asp-for="Category" class="text-[#252525] text-base block mb-2">Category</label>
                         <select id="categorySelect" asp-for="Category" class="w-full px-2 py-2 border-2 border-gray-400 bg-transparent rounded-md" onchange="toggleNewCategoryInput()">
-                            <option value="">Select a category</option>
+                            <option value="" disabled selected>Select a category</option>
                             @foreach (var category in ViewBag.Categories)
                             {
                                 <option value="@category.CategoryName">@category.CategoryName</option>
                             }
-                            <option value="new">Add new category</option>
+
                         </select>
                         <span asp-validation-for="Category" class="text-danger text-sm"></span>
                     </div>
+
                 </div>
 
                 <!-- New Category Input -->

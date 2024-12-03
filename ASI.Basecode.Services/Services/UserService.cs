@@ -81,5 +81,15 @@ namespace ASI.Basecode.Services.Services
                 throw new InvalidDataException("User not found.");
             }
         }
+
+        public Task<User> AddUserAsync(UserViewModel model)
+        {
+            throw new NotImplementedException();
+        }
+
+        public object GetUserByUsername(string userName)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -23,8 +23,12 @@
                     <div class="space-y-4">
                         <div>
                             <label class="block text-sm font-medium text-gray-700" asp-for="UserName">Username</label>
-                            <label class="mt-1 block w-full px-2 py-2 bg-transparent rounded-md">admin</label>
+                            <span class="mt-1 block w-full text-gray-900 font-bold">
+                                @Model.UserName
+                            </span>
+
                         </div>
+
                         <div class="grid grid-cols-2 gap-4">
                             <div>
                                 <label class="block text-sm font-medium text-gray-700" asp-for="FirstName">First Name</label>

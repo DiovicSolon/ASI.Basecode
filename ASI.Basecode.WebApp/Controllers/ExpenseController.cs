@@ -45,47 +45,48 @@ namespace ASI.Basecode.WebApp.Controllers
                 return View("Error", new ErrorViewModel { ErrorMessage = "Failed to load expenses." });
             }
         }
-
         public IActionResult ExpenseTable(int page = 1, int pageSize = 7, string category = null, DateTime? startDate = null, DateTime? endDate = null)
         {
             try
             {
                 string userId = GetLoggedInUserId();
 
-                // Fetch all categories for the user
+                // Fetch categories for the user
                 var categories = _categoryService.GetAllCategory()
                                                  .Where(c => c.UserName == userId)
                                                  .ToList();
                 ViewBag.Categories = categories;
 
-                // Default date range setup
-                startDate ??= DateTime.Today.AddDays(-3);
-                endDate ??= DateTime.Today.AddDays(+4);
-
                 // Filter expenses based on user, category, and date range
-                var totalExpenses = _expenseService.GetAllExpenses()
-                                                   .Where(e => e.UserName == userId);
+                var filteredExpenses = _expenseService.GetAllExpenses()
+                                                      .Where(e => e.UserName == userId);
 
                 if (!string.IsNullOrEmpty(category))
                 {
-                    totalExpenses = totalExpenses.Where(e => e.Category == category);
+                    filteredExpenses = filteredExpenses.Where(e => e.Category == category);
                 }
 
-                totalExpenses = totalExpenses.Where(e => e.Date >= startDate && e.Date <= endDate);
+                if (startDate.HasValue)
+                {
+                    filteredExpenses = filteredExpenses.Where(e => e.Date >= startDate.Value);
+                }
 
-                // Convert to list for pagination
-                var filteredExpenses = totalExpenses.ToList();
+                if (endDate.HasValue)
+                {
+                    filteredExpenses = filteredExpenses.Where(e => e.Date <= endDate.Value);
+                }
+
+                // Sort expenses by Date (latest on top)
+                filteredExpenses = filteredExpenses.OrderByDescending(e => e.Date);
 
                 // Pagination logic
-                var totalPages = (int)Math.Ceiling((double)filteredExpenses.Count / pageSize);
+                var totalExpenses = filteredExpenses.Count();
+                var totalPages = (int)Math.Ceiling((double)totalExpenses / pageSize);
 
-                // Ensure page is within valid range
                 page = Math.Max(1, Math.Min(page, totalPages));
-
-                // Fetch paginated data
-                var expenses = filteredExpenses.Skip((page - 1) * pageSize)
-                                               .Take(pageSize)
-                                               .ToList();
+                var paginatedExpenses = filteredExpenses.Skip((page - 1) * pageSize)
+                                                        .Take(pageSize)
+                                                        .ToList();
 
                 // Pass data to ViewData
                 ViewData["CurrentPage"] = page;
@@ -94,8 +95,7 @@ namespace ASI.Basecode.WebApp.Controllers
                 ViewData["StartDate"] = startDate?.ToString("yyyy-MM-dd");
                 ViewData["EndDate"] = endDate?.ToString("yyyy-MM-dd");
 
-                // Return the view with paginated expenses
-                return View(expenses);
+                return View(paginatedExpenses);
             }
             catch (Exception ex)
             {

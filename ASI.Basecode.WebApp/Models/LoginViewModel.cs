@@ -16,5 +16,7 @@ namespace ASI.Basecode.WebApp.Models
         [JsonPropertyName("password")]
         [Required(ErrorMessage = "Password is required.")]
         public string Password { get; set; }
+
+        public int Step { get; set; } // Add this property to track the forgot password steps
     }
 }

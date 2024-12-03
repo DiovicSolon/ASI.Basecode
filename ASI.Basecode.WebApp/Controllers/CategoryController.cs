@@ -35,6 +35,7 @@ namespace ASI.Basecode.WebApp.Controllers
                 // Fetch the total count of categories
                 var totalCategories = _categoryService.GetAllCategory()
                                        .Where(c => c.UserName == userId)
+                                        .OrderByDescending(c => c.DateCreated) // Sort by latest first
                                        .ToList();
 
                 int totalCategoriesCount = totalCategories.Count;
@@ -75,9 +76,23 @@ namespace ASI.Basecode.WebApp.Controllers
             {
                 try
                 {
-                    model.UserName = GetLoggedInUserId();
+                    string userId = GetLoggedInUserId();
+
+                    // Check for duplicate category
+                    var existingCategory = _categoryService.GetAllCategory()
+                                            .FirstOrDefault(c => c.CategoryName == model.CategoryName && c.UserName == userId);
+
+                    if (existingCategory != null)
+                    {
+                        TempData["ErrorMessage"] = "A category with this name already exists.";
+                        return RedirectToAction(nameof(Create)); // Redirect back to the create page
+                    }
+
+                    // Add new category
+                    model.UserName = userId;
                     model.DateCreated = DateTime.Now;
                     _categoryService.AddCategory(model);
+
                     TempData["SuccessMessage"] = "Category added successfully!";
                     return RedirectToAction(nameof(Index));
                 }
@@ -127,6 +142,18 @@ namespace ASI.Basecode.WebApp.Controllers
                         return RedirectToAction(nameof(Index));
                     }
 
+                    // Check for duplicate category name
+                    var duplicateCategory = _categoryService.GetAllCategory()
+                        .FirstOrDefault(c => c.CategoryName == model.CategoryName
+                                             && c.UserName == GetLoggedInUserId()
+                                             && c.CategoryId != model.CategoryId);
+
+                    if (duplicateCategory != null)
+                    {
+                        TempData["ErrorMessage"] = "A category with this name already exists.";
+                        return RedirectToAction(nameof(Edit), new { id = model.CategoryId });
+                    }
+
                     // Preserve the original DateCreated and UserName
                     model.DateCreated = existingCategory.DateCreated;
                     model.UserName = existingCategory.UserName;
@@ -144,6 +171,7 @@ namespace ASI.Basecode.WebApp.Controllers
 
             return View(model);
         }
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]
