@@ -125,11 +125,17 @@ namespace ASI.Basecode.WebApp.Controllers
                 TempData["ErrorMessage"] = "Invalid registration data.";
                 return View(model);
             }
+            if (model.Password.Length < 8)
+            {
+                TempData["ErrorMessage"] = "New password must be at least 8 characters long.";
+                return View(model);
+            }
 
             try
             {
-                _userService.AddUser(model);
-                return RedirectToAction("Login", "Account");
+                _userService.AddUser(model); // Save the user to the database
+                TempData["SuccessMessage"] = "Registration successful. Please log in.";
+                return RedirectToAction("Login", "Account"); // Redirect to the login page
             }
             catch (InvalidDataException ex)
             {
@@ -139,6 +145,7 @@ namespace ASI.Basecode.WebApp.Controllers
             {
                 TempData["ErrorMessage"] = "An error occurred. Please try again.";
             }
+
             return View(model);
         }
 
@@ -149,11 +156,7 @@ namespace ASI.Basecode.WebApp.Controllers
             return RedirectToAction("Login", "Account");
         }
 
-       
-
-
-
-    }
+      }
 
 
 

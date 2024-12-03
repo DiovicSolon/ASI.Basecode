@@ -13,5 +13,7 @@ namespace ASI.Basecode.Services.Interfaces
 
         User GetUserByEmail(string email);
         void UpdateUser(User user);
+        Task<User> AddUserAsync(UserViewModel model);
+        object GetUserByUsername(string userName);
     }
 }

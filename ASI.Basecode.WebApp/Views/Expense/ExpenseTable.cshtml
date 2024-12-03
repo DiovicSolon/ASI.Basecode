@@ -46,16 +46,24 @@
                     </div>
 
                     <!-- Start Date Input -->
+                    <!-- Start Date Input -->
                     <div class="flex flex-col items-start">
                         <label for="start-date" class="text-gray-600 text-sm ml-1">Start</label>
-                        <input id="start-date" name="startDate" type="date" class="border-2 border-gray-400 rounded-lg bg-transparent py-[3px] px-1" value="@ViewData["StartDate"]" onchange="document.getElementById('filter-form').submit()" />
+                        <input id="start-date" name="startDate" type="date"
+                               class="border-2 border-gray-400 rounded-lg bg-transparent py-[3px] px-1"
+                               value="@ViewData["StartDate"]"
+                               onchange="document.getElementById('filter-form').submit()" />
                     </div>
 
                     <!-- End Date Input -->
                     <div class="flex flex-col items-start">
                         <label for="end-date" class="text-gray-600 text-sm ml-1">End</label>
-                        <input id="end-date" name="endDate" type="date" class="border-2 border-gray-400 rounded-lg bg-transparent py-[3px] px-1" value="@ViewData["EndDate"]" onchange="document.getElementById('filter-form').submit()" />
+                        <input id="end-date" name="endDate" type="date"
+                               class="border-2 border-gray-400 rounded-lg bg-transparent py-[3px] px-1"
+                               value="@ViewData["EndDate"]"
+                               onchange="document.getElementById('filter-form').submit()" />
                     </div>
+
                 </form>
 
             </div>

@@ -29,13 +29,13 @@
                     <span asp-validation-for="Email" class="text-danger"></span>
                 </div>
                 <div>
-                    <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
-                    <input asp-for="UserName" type="text" id="username" name="username" class="mt-1 block w-full px-2 py-2 border-solid border-2 border-gray-400 bg-transparent rounded-md">
+                    <label for="UserName" class="block text-sm font-medium text-gray-700">Username</label>
+                    <input asp-for="UserName" type="text" id="UserName" name="UserName" class="mt-1 block w-full px-2 py-2 border-solid border-2 border-gray-400 bg-transparent rounded-md">
                     <span asp-validation-for="UserName" class="text-danger"></span>
                 </div>
                 <div>
-                    <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
-                    <input asp-for="Password" type="password" id="password" name="password" class="mt-1 block w-full bg-transparent px-2 py-2 border-solid border-2 border-gray-400 rounded-md">
+                    <label for="Password" class="block text-sm font-medium text-gray-700">Password</label>
+                    <input asp-for="Password" type="Password" id="Password" name="Password" class="mt-1 block w-full bg-transparent px-2 py-2 border-solid border-2 border-gray-400 rounded-md">
                     <span asp-validation-for="Password" class="text-danger"></span>
                 </div>
                 <div>
@@ -65,6 +65,10 @@
         var errorMessage = '@TempData["ErrorMessage"]';
         if (errorMessage) {
             toastr.error(errorMessage);
+        }
+        var successMessage = '@TempData["SuccessMessage"]';
+        if (successMessage) {
+            toastr.success(successMessage);
         }
     </script>
 }

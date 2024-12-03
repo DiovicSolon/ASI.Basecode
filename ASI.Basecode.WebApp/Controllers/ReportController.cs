@@ -35,9 +35,16 @@ namespace ASI.Basecode.WebApp.Controllers
                 .ToList();
             ViewBag.Categories = categories;
 
-            // Set default date range if not provided
-            startDate ??= DateTime.Today.AddDays(-30);  // Default to last 30 days
-            endDate ??= DateTime.Today;
+
+
+
+            ViewBag.SelectedCategory = category;
+
+
+            ViewBag.StartDate = startDate?.ToString("yyyy-MM-dd");
+            ViewBag.EndDate = endDate?.ToString("yyyy-MM-dd");
+
+
 
             // Build the query with filters
             var query = _context.Expenses.Where(e => e.UserName == userId);

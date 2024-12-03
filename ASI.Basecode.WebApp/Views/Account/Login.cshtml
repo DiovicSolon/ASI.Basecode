@@ -55,5 +55,11 @@
         if (errorMessage) {
             toastr.error(errorMessage);
         }
+
+
+        var successMessage = '@TempData["SuccessMessage"]';
+        if (successMessage) {
+            toastr.success(successMessage);
+        }
     </script>
 }
