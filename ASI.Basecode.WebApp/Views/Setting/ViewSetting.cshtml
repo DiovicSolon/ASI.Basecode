@@ -9,8 +9,6 @@
         </div>
     </div>
     <div class="overflow-y-auto max-h-[calc(100vh-128px)] scrollbar-hidden space-y-6">
-
-        <!-- Account Details -->
         <div class="border-2 border-gray-400 p-4 rounded-xl">
             <div class="mx-3 my-3">
                 <div class="mb-4">
@@ -62,8 +60,6 @@
                 </form>
             </div>
         </div>
-
-        <!-- Change Password -->
         <div class="border-2 border-gray-400 p-4 rounded-xl">
             <div class="mx-3 my-3">
                 <div class="mb-4">
@@ -124,7 +120,6 @@
                 const profileImage = document.getElementById('profileImage');
 
                 if (profileImage.tagName.toLowerCase() === 'svg') {
-                    // Replace SVG with img element
                     const img = document.createElement('img');
                     img.src = e.target.result;
                     img.id = 'profileImage';
@@ -132,7 +127,6 @@
                     img.alt = 'Profile Picture';
                     profileImage.parentNode.replaceChild(img, profileImage);
                 } else {
-                    // Update existing img element
                     profileImage.src = e.target.result;
                 }
             }
@@ -141,12 +135,10 @@
         }
     }
 
-    // Add error handling for image loading
     document.addEventListener('DOMContentLoaded', function () {
         const profileImage = document.getElementById('profileImage');
         if (profileImage.tagName.toLowerCase() === 'img') {
             profileImage.onerror = function () {
-                // If image fails to load, replace with default SVG
                 const svg = `<svg xmlns="http://www.w3.org/2000/svg" class="h-24 w-24 text-[#4D7766]" viewBox="0 0 48 48" id="profileImage">
                                                                                                                            <g fill="currentColor">
                                                                                                                                <path d="M32 20a8 8 0 1 1-16 0a8 8 0 0 1 16 0" />
