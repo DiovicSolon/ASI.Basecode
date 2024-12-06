@@ -17,24 +17,6 @@
 
             <div class="border-b-2 border-gray-400 mb-4"></div>
 
-            <!-- Display Success and Error Messages -->
-            <div class="message-container">
-                @if (TempData["SuccessMessage"] != null)
-                {
-                    <div class="alert alert-success alert-message">
-                        @TempData["SuccessMessage"]
-                    </div>
-                }
-
-                @if (TempData["ErrorMessage"] != null)
-                {
-                    <div class="alert alert-danger alert-message">
-                        @TempData["ErrorMessage"]
-                    </div>
-                }
-            </div>
-
-            <!-- Add Category Form -->
             <form method="post" asp-action="Create">
                 <div class="mb-3">
                     <label asp-for="CategoryName" class="text-[#252525] text-base block mb-2">Category Name</label>
@@ -42,7 +24,6 @@
                     <span asp-validation-for="CategoryName" class="text-danger"></span>
                 </div>
 
-                <!-- Hidden field for UserName -->
                 <input type="hidden" asp-for="UserName" value="@User.Identity.Name" />
 
                 <div class="flex items-center justify-end gap-4 mt-4">

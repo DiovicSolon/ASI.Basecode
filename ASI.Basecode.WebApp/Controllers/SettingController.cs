@@ -50,8 +50,6 @@ namespace ASI.Basecode.WebApp.Controllers
                 {
                     return NotFound();
                 }
-
-                // Set profile picture URL in session
                 UpdateProfilePictureSession(user.ProfilePictureUrl);
 
                 return View(user);
@@ -106,7 +104,6 @@ namespace ASI.Basecode.WebApp.Controllers
                     string uniqueFileName = $"{Guid.NewGuid()}_{Path.GetFileName(ProfilePicture.FileName)}";
                     string filePath = Path.Combine(_uploadsFolder, uniqueFileName);
 
-                    // Delete old profile picture if it exists
                     if (!string.IsNullOrEmpty(existingUser.ProfilePictureUrl))
                     {
                         string oldFilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot",
@@ -117,30 +114,24 @@ namespace ASI.Basecode.WebApp.Controllers
                         }
                     }
 
-                    // Save new profile picture
                     using (var fileStream = new FileStream(filePath, FileMode.Create))
                     {
                         await ProfilePicture.CopyToAsync(fileStream);
                     }
 
-                    // Update database path
                     existingUser.ProfilePictureUrl = $"/img/profiles/{uniqueFileName}";
 
-                    // Update session
                     UpdateProfilePictureSession(existingUser.ProfilePictureUrl);
                 }
 
-                // Update user fields
                 existingUser.FirstName = user.FirstName;
                 existingUser.LastName = user.LastName;
                 existingUser.Email = user.Email;
                 existingUser.UpdatedBy = GetLoggedInUserName();
                 existingUser.UpdatedTime = DateTime.Now;
 
-                // Save changes to the database
                 await _context.SaveChangesAsync();
 
-                // Update session values
                 HttpContext.Session.SetString("UserName", $"{existingUser.FirstName} {existingUser.LastName}");
 
                 TempData["SuccessMessage"] = "Profile updated successfully!";
@@ -188,7 +179,6 @@ namespace ASI.Basecode.WebApp.Controllers
                     return RedirectToAction(nameof(ViewSetting));
                 }
 
-                // Validate current password
                 try
                 {
                     string decryptedPassword = PasswordManager.DecryptPassword(user.Password);
@@ -205,7 +195,6 @@ namespace ASI.Basecode.WebApp.Controllers
                     return RedirectToAction(nameof(ViewSetting));
                 }
 
-                // Update password
                 user.Password = PasswordManager.EncryptPassword(newPassword);
                 user.UpdatedBy = userName;
                 user.UpdatedTime = DateTime.Now;

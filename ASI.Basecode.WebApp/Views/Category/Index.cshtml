@@ -93,7 +93,6 @@
             </table>
         </div>
         <div class="flex items-center justify-center mt-2 gap-x-4">
-            <!-- Previous Button -->
             <button class="bg-[#4D7766] p-1 rounded-full text-white disabled:opacity-50 disabled:cursor-not-allowed"
                     onclick="location.href='@Url.Action("Index", new { page = (int)ViewData["CurrentPage"] - 1, pageSize = 7 })'"
             @(Convert.ToInt32(ViewData["CurrentPage"]) <= 1 ? "disabled" : "")>
@@ -102,12 +101,10 @@
                 </svg>
             </button>
 
-            <!-- Page Number -->
             <span>
                 <p>Page @(ViewData["CurrentPage"]) of @(ViewData["TotalPages"])</p>
             </span>
 
-            <!-- Next Button -->
             <button class="bg-[#4D7766] p-1 rounded-full text-white disabled:opacity-50 disabled:cursor-not-allowed"
                     onclick="location.href='@Url.Action("Index", new { page = (int)ViewData["CurrentPage"] + 1, pageSize = 7 })'"
             @(Convert.ToInt32(ViewData["CurrentPage"]) >= Convert.ToInt32(ViewData["TotalPages"]) ? "disabled" : "")>

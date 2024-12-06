@@ -63,7 +63,7 @@ namespace ASI.Basecode.WebApp.Controllers
                 return RedirectToAction(nameof(ForgotPassword));
             }
 
-            user.Password = newPassword; // Hash this password in UserService.
+            user.Password = newPassword;
             _userService.UpdateUser(user);
 
             TempData["SuccessMessage"] = "Password has been updated successfully.";
@@ -100,7 +100,7 @@ namespace ASI.Basecode.WebApp.Controllers
             if (loginResult == LoginResult.Success)
             {
                 await _signInManager.SignInAsync(user);
-                HttpContext.Session.SetString("UserName", $"{user.FirstName} {user.LastName}"); // Include LastName
+                HttpContext.Session.SetString("UserName", $"{user.FirstName} {user.LastName}");
                 return RedirectToAction("ExpenseTable", "Expense");
             }
 

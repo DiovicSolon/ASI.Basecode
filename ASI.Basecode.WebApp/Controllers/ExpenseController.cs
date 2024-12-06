@@ -13,13 +13,13 @@ namespace ASI.Basecode.WebApp.Controllers
     public class ExpenseController : Controller
     {
         private readonly IExpenseService _expenseService;
-        private readonly ICategoryService _categoryService; // Add this line to inject category service
+        private readonly ICategoryService _categoryService;
         private readonly ILogger<ExpenseController> _logger;
 
         public ExpenseController(IExpenseService expenseService, ICategoryService categoryService, ILogger<ExpenseController> logger)
         {
             _expenseService = expenseService;
-            _categoryService = categoryService; // Initialize the category service
+            _categoryService = categoryService;
             _logger = logger;
         }
 
@@ -51,13 +51,11 @@ namespace ASI.Basecode.WebApp.Controllers
             {
                 string userId = GetLoggedInUserId();
 
-                // Fetch categories for the user
                 var categories = _categoryService.GetAllCategory()
                                                  .Where(c => c.UserName == userId)
                                                  .ToList();
                 ViewBag.Categories = categories;
 
-                // Filter expenses based on user, category, and date range
                 var filteredExpenses = _expenseService.GetAllExpenses()
                                                       .Where(e => e.UserName == userId);
 
@@ -76,10 +74,8 @@ namespace ASI.Basecode.WebApp.Controllers
                     filteredExpenses = filteredExpenses.Where(e => e.Date <= endDate.Value);
                 }
 
-                // Sort expenses by Date (latest on top)
                 filteredExpenses = filteredExpenses.OrderByDescending(e => e.Date);
 
-                // Pagination logic
                 var totalExpenses = filteredExpenses.Count();
                 var totalPages = (int)Math.Ceiling((double)totalExpenses / pageSize);
 
@@ -88,7 +84,6 @@ namespace ASI.Basecode.WebApp.Controllers
                                                         .Take(pageSize)
                                                         .ToList();
 
-                // Pass data to ViewData
                 ViewData["CurrentPage"] = page;
                 ViewData["TotalPages"] = totalPages;
                 ViewData["SelectedCategory"] = category;
@@ -107,12 +102,12 @@ namespace ASI.Basecode.WebApp.Controllers
 
         public IActionResult Create()
         {
-            var userName = GetLoggedInUserId(); // Get the logged-in user's username
+            var userName = GetLoggedInUserId();
             var categories = _categoryService.GetAllCategory()
-                .Where(c => c.UserName == userName) // Filter categories by UserName
+                .Where(c => c.UserName == userName)
                 .ToList();
 
-            ViewBag.Categories = categories; // Pass categories to the view
+            ViewBag.Categories = categories;
             return View();
         }
 
@@ -136,7 +131,6 @@ namespace ASI.Basecode.WebApp.Controllers
                 }
             }
 
-            // Re-populate categories on validation error
             var userName = GetLoggedInUserId();
             var categories = _categoryService.GetAllCategory()
                 .Where(c => c.UserName == userName)
@@ -155,7 +149,6 @@ namespace ASI.Basecode.WebApp.Controllers
                 return RedirectToAction(nameof(ExpenseTable));
             }
 
-            // Pass categories to the view for editing
             var userName = GetLoggedInUserId();
             var categories = _categoryService.GetAllCategory()
                 .Where(c => c.UserName == userName)
@@ -191,7 +184,6 @@ namespace ASI.Basecode.WebApp.Controllers
                 }
             }
 
-            // Re-populate categories on validation error
             var userName = GetLoggedInUserId();
             var categories = _categoryService.GetAllCategory()
                 .Where(c => c.UserName == userName)
